@@ -1,18 +1,19 @@
-# Exercise 2: TCC with GitHub Actions
+# Exercise 2: Enterprise TCC CI/CD Integration and Advanced Troubleshooting
 
 ## 🎯 Learning Objectives
 
 By the end of this exercise, you will:
-- Configure TCC in GitHub Actions workflows
-- Troubleshoot common TCC CI/CD issues
-- Understand TCC quota and billing in CI environments
-- Handle authentication and connectivity problems
+- Implement TCC in complex enterprise CI/CD pipelines
+- Diagnose advanced TCC integration issues
+- Understand TCC billing models and quota management
+- Handle enterprise authentication and network configurations
 
 ## 📚 Prerequisites
 
-- Completed Exercise 1 (TCC Setup)
-- Basic understanding of GitHub Actions
-- TCC account with service account access
+- Completed Exercise 1 (TCC Architecture)
+- Advanced GitHub Actions and CI/CD experience
+- Enterprise authentication system knowledge
+- Understanding of container orchestration and networking
 
 ## 🚨 Real TSE Scenario: GitHub Actions TCC Timeout
 

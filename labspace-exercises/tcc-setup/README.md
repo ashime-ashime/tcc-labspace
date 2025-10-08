@@ -1,47 +1,65 @@
-# Exercise 1: TCC Setup and First Tests
+# Exercise 1: TCC Architecture and Advanced Configuration
 
 ## 🎯 Learning Objectives
 
 By the end of this exercise, you will:
-- Set up Testcontainers Desktop and connect to TCC
-- Run your first tests in Testcontainers Cloud
-- Understand the difference between local and cloud execution
-- Monitor your TCC usage
+- Understand TCC architecture and infrastructure
+- Configure advanced TCC settings for enterprise environments
+- Diagnose TCC connectivity and performance issues
+- Implement TCC optimization strategies
 
 ## 📚 Prerequisites
 
-- Docker Desktop installed and running
-- Internet connectivity
-- Basic understanding of testing concepts
+- Docker Desktop with advanced configuration knowledge
+- Understanding of container orchestration and networking
+- Experience with CI/CD pipelines and service accounts
+- Familiarity with enterprise authentication systems
 
-## 🚀 Step 1: Install Testcontainers Desktop
+## 🏗️ TCC Architecture Deep Dive
 
-### 1.1 Download Testcontainers Desktop
+### Infrastructure Components
 
-Visit [https://testcontainers.com/desktop/](https://testcontainers.com/desktop/) and download the app for your OS:
+TCC operates on a distributed architecture:
+- **Edge Locations**: Regional TCC endpoints for low latency
+- **Container Orchestration**: Kubernetes-based container management
+- **Image Registry**: Cached container images for faster startup
+- **Authentication Layer**: OAuth2/JWT-based service accounts
 
-- **Mac**: `brew install atomicjar/tap/testcontainers-desktop`
-- **Windows**: Download the Windows installer
-- **Linux**: Download .deb or .rpm package
+### Network Architecture
 
-### 1.2 Install and Start the App
-
-```bash
-# For Mac with Homebrew
-brew install atomicjar/tap/testcontainers-desktop
-
-# Start the app
-testcontainers-desktop
+```
+Local Machine → Testcontainers Desktop → TCC API Gateway → Regional Workers
+                     ↓
+                Local Docker Socket (bypass for cloud execution)
 ```
 
-### 1.3 Sign Up for Testcontainers Cloud
+## 🚀 Advanced TCC Configuration
 
-1. Open Testcontainers Desktop
-2. Click "Sign up for free"
-3. Create your account
-4. Sign in to the app
+### Enterprise Authentication
 
-**Expected Result**: You should see "Connected to Testcontainers Cloud" in the app.
+```bash
+# Configure service account with specific permissions
+export TESTCONTAINERS_CLOUD_TOKEN="tc_..."
+export TESTCONTAINERS_CLOUD_API_URL="https://api.testcontainers.cloud/v1"
+
+# Advanced connection settings
+export TESTCONTAINERS_CLOUD_TIMEOUT="300"
+export TESTCONTAINERS_CLOUD_RETRY_ATTEMPTS="3"
+```
+
+### Performance Optimization
+
+```yaml
+# GitHub Actions with advanced TCC settings
+- name: Setup TCC with optimization
+  uses: atomicjar/testcontainers-cloud-setup-action@v1
+  with:
+    token: ${{ secrets.TESTCONTAINERS_CLOUD_TOKEN }}
+    wait: true
+    timeout: 300
+    retry-attempts: 3
+    retry-delay: 10
+```
 
 ## 🧪 Step 2: Run Your First TCC Test
 
