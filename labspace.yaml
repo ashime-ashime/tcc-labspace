@@ -1,0 +1,50 @@
+title: "Testcontainers Cloud (TCC) Lab for TSEs"
+description: "A comprehensive hands-on lab designed for Technical Support Engineers (TSEs) to master Testcontainers Cloud through practical exercises and real-world troubleshooting scenarios."
+version: "1.0.0"
+author: "Docker TSE Team"
+tags:
+  - testcontainers
+  - tcc
+  - cloud
+  - testing
+  - tse
+  - troubleshooting
+difficulty: "intermediate"
+duration: "2-3 hours"
+prerequisites:
+  - "Basic understanding of containerization"
+  - "Familiarity with Python or Java"
+  - "Internet connectivity for TCC access"
+learning_objectives:
+  - "Set up and configure Testcontainers Cloud (TCC)"
+  - "Run database tests in the cloud with zero code changes"
+  - "Understand TCC benefits over local testing"
+  - "Monitor and optimize free tier usage"
+  - "Troubleshoot common TCC issues"
+  - "Handle real TSE scenarios with TCC"
+exercises:
+  - id: "tcc-basics"
+    title: "TCC Basics"
+    description: "Learn the fundamentals of Testcontainers Cloud and run your first tests in the cloud"
+    duration: "45 minutes"
+    difficulty: "beginner"
+  - id: "tcc-optimization"
+    title: "TCC Optimization & Best Practices"
+    description: "Learn to optimize free tier usage and implement best practices for TCC"
+    duration: "30 minutes"
+    difficulty: "intermediate"
+  - id: "tcc-troubleshooting"
+    title: "TCC Troubleshooting Scenarios"
+    description: "Handle real-world TCC issues that TSEs encounter when helping customers"
+    duration: "45 minutes"
+    difficulty: "advanced"
+resources:
+  - title: "Testcontainers Cloud Documentation"
+    url: "https://testcontainers.com/cloud/docs/"
+    type: "documentation"
+  - title: "TCC Best Practices"
+    url: "https://testcontainers.com/cloud/docs/"
+    type: "guide"
+  - title: "TCC Troubleshooting Guide"
+    url: "https://testcontainers.com/cloud/docs/"
+    type: "troubleshooting"
