@@ -1,64 +1,52 @@
-# LabSpace-compatible Dockerfile
-FROM nginx:alpine
+# Interactive LabSpace Dockerfile
+FROM ubuntu:22.04
 
-# Install basic tools for LabSpace
-RUN apk add --no-cache \
+# Install basic tools and dependencies
+RUN apt-get update && apt-get install -y \
     python3 \
-    py3-pip \
+    python3-pip \
     curl \
-    git
+    git \
+    vim \
+    nano \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create symbolic links for python
+RUN ln -s /usr/bin/python3 /usr/bin/python
 
 # Copy lab content
-COPY . /usr/share/nginx/html/
+COPY . /workspace/
+WORKDIR /workspace
 
-# Create a simple index.html for LabSpace navigation
-COPY <<EOF /usr/share/nginx/html/index.html
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Testcontainers Cloud Lab for TSEs</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        .exercise { background: #f5f5f5; padding: 20px; margin: 20px 0; border-radius: 5px; }
-        h1 { color: #333; }
-        h2 { color: #666; }
-        a { color: #007bff; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-    </style>
-</head>
-<body>
-    <h1>🌐 Testcontainers Cloud (TCC) Lab for TSEs</h1>
-    <p>Master Testcontainers Cloud through hands-on exercises and real TSE troubleshooting scenarios.</p>
-    
-    <div class="exercise">
-        <h2>📚 Exercises</h2>
-        <ul>
-            <li><a href="/labspace-exercises/tcc-setup/README.md">Exercise 1: TCC Architecture and Advanced Configuration</a></li>
-            <li><a href="/labspace-exercises/tcc-github-actions/README.md">Exercise 2: Enterprise TCC CI/CD Integration</a></li>
-            <li><a href="/labspace-exercises/tcc-troubleshooting/README.md">Exercise 3: Advanced TSE TCC Troubleshooting</a></li>
-        </ul>
-    </div>
-    
-    <div class="exercise">
-        <h2>📋 Lab Information</h2>
-        <ul>
-            <li><strong>Difficulty:</strong> Advanced</li>
-            <li><strong>Duration:</strong> 3-4 hours</li>
-            <li><strong>Target:</strong> Senior TSEs</li>
-        </ul>
-    </div>
-    
-    <div class="exercise">
-        <h2>🔗 Resources</h2>
-        <ul>
-            <li><a href="https://testcontainers.com/cloud/">Testcontainers Cloud Documentation</a></li>
-            <li><a href="https://testcontainers.com/desktop/">Testcontainers Desktop</a></li>
-            <li><a href="https://testcontainers.com/">Testcontainers Main Site</a></li>
-        </ul>
-    </div>
-</body>
-</html>
+# Create a welcome script
+COPY <<EOF /workspace/welcome.sh
+#!/bin/bash
+clear
+echo "🚀 Testcontainers Cloud (TCC) Lab for TSEs"
+echo "=========================================="
+echo ""
+echo "📚 Available Exercises:"
+echo "1. TCC Architecture and Advanced Configuration"
+echo "2. Enterprise TCC CI/CD Integration"  
+echo "3. Advanced TSE TCC Troubleshooting"
+echo ""
+echo "📁 Exercise Locations:"
+echo "• Exercise 1: labspace-exercises/tcc-setup/"
+echo "• Exercise 2: labspace-exercises/tcc-github-actions/"
+echo "• Exercise 3: labspace-exercises/tcc-troubleshooting/"
+echo ""
+echo "🔧 Quick Start Commands:"
+echo "• View Exercise 1: cat labspace-exercises/tcc-setup/README.md"
+echo "• View Exercise 2: cat labspace-exercises/tcc-github-actions/README.md"
+echo "• View Exercise 3: cat labspace-exercises/tcc-troubleshooting/README.md"
+echo ""
+echo "💡 Tip: Use 'cat' to view exercise files, 'cd' to navigate directories"
+echo "=========================================="
+echo ""
 EOF
 
-# Expose port for web interface
-EXPOSE 80
+# Make welcome script executable
+RUN chmod +x /workspace/welcome.sh
+
+# Run welcome script and start bash
+CMD ["/bin/bash", "-c", "/workspace/welcome.sh && /bin/bash"]
