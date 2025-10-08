@@ -33,66 +33,129 @@ Local Machine → Testcontainers Desktop → TCC API Gateway → Regional Worker
                 Local Docker Socket (bypass for cloud execution)
 ```
 
-## 🚀 Advanced TCC Configuration
+## 🚀 Step 1: Install and Configure Testcontainers Desktop
 
-### Enterprise Authentication
+### 1.1 Download Testcontainers Desktop
+
+**For Mac:**
+```bash
+# Install via Homebrew (recommended)
+brew install atomicjar/tap/testcontainers-desktop
+
+# Or download from: https://testcontainers.com/desktop/
+```
+
+**For Windows:**
+1. Go to https://testcontainers.com/desktop/
+2. Download the Windows installer
+3. Run the installer as administrator
+
+**For Linux:**
+```bash
+# Download the .deb package
+wget https://github.com/atomicjar/testcontainers-desktop/releases/latest/download/testcontainers-desktop-linux-amd64.deb
+sudo dpkg -i testcontainers-desktop-linux-amd64.deb
+```
+
+### 1.2 Start Testcontainers Desktop
 
 ```bash
-# Configure service account with specific permissions
-export TESTCONTAINERS_CLOUD_TOKEN="tc_..."
-export TESTCONTAINERS_CLOUD_API_URL="https://api.testcontainers.cloud/v1"
+# Start the application
+testcontainers-desktop
 
-# Advanced connection settings
-export TESTCONTAINERS_CLOUD_TIMEOUT="300"
-export TESTCONTAINERS_CLOUD_RETRY_ATTEMPTS="3"
+# Verify it's running
+ps aux | grep testcontainers-desktop
 ```
 
-### Performance Optimization
+### 1.3 Sign Up for Testcontainers Cloud
 
-```yaml
-# GitHub Actions with advanced TCC settings
-- name: Setup TCC with optimization
-  uses: atomicjar/testcontainers-cloud-setup-action@v1
-  with:
-    token: ${{ secrets.TESTCONTAINERS_CLOUD_TOKEN }}
-    wait: true
-    timeout: 300
-    retry-attempts: 3
-    retry-delay: 10
-```
+1. **Open Testcontainers Desktop** (should open automatically after install)
+2. **Click "Sign up for free"** button
+3. **Create account** with your email
+4. **Verify email** if required
+5. **Sign in** to the Desktop app
+
+### 1.4 Verify Connection
+
+**Look for these indicators:**
+- ✅ Desktop app shows "Connected to Testcontainers Cloud"
+- ✅ Green status indicator in the app
+- ✅ No error messages in the app
+
+**If not connected:**
+- Check internet connection
+- Restart the Desktop app
+- Sign out and sign back in
 
 ## 🧪 Step 2: Run Your First TCC Test
 
-### 2.1 Create a Simple Test
-
-Let's create a basic test that runs in TCC:
+### 2.1 Navigate to the Test Directory
 
 ```bash
-# Navigate to the Python example
-cd python
+# You should be in the lab directory
+pwd
+# Expected: /workspace or similar
 
-# Install dependencies
-pip install testcontainers[postgres] psycopg2-binary pytest
-
-# Run the test
-pytest test_simple.py -v
+# Navigate to the Python test
+cd labspace-exercises/tcc-setup/python
+ls -la
+# Expected: test_simple.py should be visible
 ```
 
-### 2.2 What Should Happen
+### 2.2 Install Python Dependencies
 
-When you run the test, you should see:
-- Testcontainers Desktop shows activity
-- Tests run in the cloud (not locally)
-- Your laptop resources are preserved
-- Test completes successfully
+```bash
+# Install required packages
+pip3 install testcontainers[postgres] psycopg2-binary pytest
 
-### 2.3 Verify Cloud Execution
+# Verify installation
+python3 -c "import testcontainers; print('✅ Testcontainers installed')"
+```
 
-Look for these indicators that tests are running in TCC:
+### 2.3 Run the Test
+
+```bash
+# Run the simple PostgreSQL test
+python3 -m pytest test_simple.py -v
+
+# Alternative: Run directly
+python3 test_simple.py
+```
+
+### 2.4 Expected Output
+
+**If TCC is working correctly, you should see:**
+```
+✅ PostgreSQL test completed successfully in TCC!
+```
+
+**If running in cloud, you'll also see:**
 - Testcontainers Desktop shows "Cloud" activity
 - No local Docker containers created
-- Faster startup times after first run
-- Usage tracking in the Desktop app
+- Test completes faster after first run
+
+### 2.5 Troubleshooting
+
+**If you get errors:**
+
+1. **Import Error:**
+   ```bash
+   # Solution: Install missing package
+   pip3 install testcontainers
+   ```
+
+2. **Connection Error:**
+   ```bash
+   # Check if TCC is connected
+   # Open Testcontainers Desktop app
+   # Verify green "Connected" status
+   ```
+
+3. **Permission Error:**
+   ```bash
+   # Solution: Use python3 instead of python
+   python3 test_simple.py
+   ```
 
 ## 📊 Step 3: Monitor TCC Usage
 
