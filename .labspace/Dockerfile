@@ -1,5 +1,5 @@
 # Use a base image that already has Java and Maven
-FROM maven:3.9-openjdk-11-slim
+FROM maven:3.9.11-eclipse-temurin-11
 
 # Install Python and pip
 RUN apt-get update && apt-get install -y \
