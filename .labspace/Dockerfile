@@ -1,18 +1,16 @@
-# Use a standard Python base image with development tools
-FROM python:3.11-slim
+# Use a base image that already has Java and Maven
+FROM maven:3.9-openjdk-11-slim
 
-# Install system dependencies
+# Install Python and pip
 RUN apt-get update && apt-get install -y \
-    curl \
-    git \
-    openjdk-11-jdk \
-    maven \
-    && apt-get clean \
+    python3 \
+    python3-pip \
+    python3-venv \
     && rm -rf /var/lib/apt/lists/*
 
-# Set up Java environment
-ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
-ENV PATH=$PATH:$JAVA_HOME/bin
+# Create symlinks for python
+RUN ln -s /usr/bin/python3 /usr/bin/python && \
+    ln -s /usr/bin/pip3 /usr/bin/pip
 
 # Copy lab content
 COPY labspace-exercises/ /app/labspace-exercises/
