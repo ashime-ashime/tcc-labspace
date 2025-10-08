@@ -27,6 +27,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         context: .
+        file: .labspace/Dockerfile
         push: true
         tags: |
           ashimeashime006/tcc-lab:latest

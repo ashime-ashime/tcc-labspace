@@ -1,15 +1,9 @@
-# LabSpace override configuration for TCC Lab
-# This extends the base LabSpace configuration with TCC-specific settings
-
 services:
   labspace:
     environment:
-      # TCC-specific environment variables
-      - LABSPACE_TITLE=Testcontainers Cloud Lab for TSEs
-      - LABSPACE_DESCRIPTION=Master TCC through hands-on exercises
-      - TCC_FOCUS=true
+      # Pass environment variables to the LabSpace container
+      - LABSPACE_EXERCISES_PATH=/app/labspace-exercises
     volumes:
-      # Mount lab content for live updates
-      - ./exercises:/workspace/exercises
-      - ./resources:/workspace/resources
-      - ./troubleshooting:/workspace/troubleshooting
+      - ./labspace-exercises:/app/labspace-exercises:ro
+      - ./labspace.yaml:/app/labspace.yaml:ro
+      - ./README.md:/app/README.md:ro
