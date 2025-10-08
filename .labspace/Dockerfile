@@ -28,13 +28,13 @@ echo "  2. TCC Optimization (30 min)"\n\
 echo "  3. TCC Troubleshooting (45 min)"\n\
 echo ""\n\
 echo "🚀 Quick Start:"\n\
-echo "  cd labspace-exercises/tcc-basics\n\
-echo "  cat README.md\n\
+echo "  cd labspace-exercises/tcc-basics"\n\
+echo "  cat README.md"\n\
 echo ""\n\
 echo "💡 Tips:"\n\
-echo "  - Use 'tree' to explore the lab structure\n\
-echo "  - Use 'less README.md' to read exercise guides\n\
-echo "  - All exercises are in /app/labspace-exercises/\n\
+echo "  - Use \"tree\" to explore the lab structure"\n\
+echo "  - Use \"less README.md\" to read exercise guides"\n\
+echo "  - All exercises are in /app/labspace-exercises/"\n\
 echo ""\n\
 echo "🎯 Ready to start? Choose your exercise:"\n\
 echo "  cd labspace-exercises/tcc-basics    # Start with Exercise 1"\n\
