@@ -5,12 +5,13 @@ FROM python:3.11-slim
 RUN apt-get update && apt-get install -y \
     curl \
     git \
-    openjdk-17-jdk \
+    openjdk-11-jdk \
     maven \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Set up Java environment
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 ENV PATH=$PATH:$JAVA_HOME/bin
 
 # Copy lab content
