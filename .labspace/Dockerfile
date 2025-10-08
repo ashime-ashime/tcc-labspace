@@ -1,16 +1,8 @@
 # Use a base image that already has Java and Maven
 FROM maven:3.9.11-eclipse-temurin-11
 
-# Install Python and pip
-RUN apt-get update && apt-get install -y \
-    python3 \
-    python3-pip \
-    python3-venv \
-    && rm -rf /var/lib/apt/lists/*
-
-# Create symlinks for python
-RUN ln -s /usr/bin/python3 /usr/bin/python && \
-    ln -s /usr/bin/pip3 /usr/bin/pip
+# Install Python and pip (keep it simple)
+RUN apt-get update && apt-get install -y python3 python3-pip && rm -rf /var/lib/apt/lists/*
 
 # Copy lab content
 COPY labspace-exercises/ /app/labspace-exercises/
@@ -21,10 +13,7 @@ COPY README.md /app/
 WORKDIR /app
 
 # Install Python dependencies for the lab
-RUN pip install --no-cache-dir \
-    pytest \
-    psycopg2-binary \
-    testcontainers[postgres]
+RUN pip3 install --no-cache-dir -r labspace-exercises/tcc-basics/python/requirements.txt
 
 # Expose port for lab interface
 EXPOSE 8080
