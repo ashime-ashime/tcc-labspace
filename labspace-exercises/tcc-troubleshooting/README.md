@@ -1,300 +1,289 @@
-# Exercise 3: TCC Troubleshooting Scenarios
+# Exercise 3: Real TSE TCC Troubleshooting
 
 ## 🎯 Learning Objectives
 
-By the end of this exercise, you will be able to:
-- Diagnose common Testcontainers Cloud issues
-- Troubleshoot TCC connectivity problems
-- Handle free tier exhaustion scenarios
-- Resolve TCC authentication issues
-- Apply TCC-specific debugging techniques
+By the end of this exercise, you will:
+- Handle real customer TCC issues like a TSE
+- Diagnose quota, billing, and connectivity problems
+- Apply systematic troubleshooting approaches
+- Provide effective customer support solutions
 
 ## 📚 Prerequisites
 
-- Completed Exercise 1 (TCC Basics)
-- Completed Exercise 2 (TCC Optimization)
-- Testcontainers Desktop installed and configured
-- TCC account with free tier access
-- Basic understanding of network troubleshooting
+- Completed Exercise 1 (TCC Setup)
+- Completed Exercise 2 (GitHub Actions)
+- Understanding of TCC billing and quotas
 
-## 🌐 Exercise Overview
+## 🚨 Real TSE Scenarios
 
-This exercise focuses on **real-world TCC troubleshooting scenarios** that TSEs encounter when helping customers. Learn to diagnose and resolve common TCC issues using systematic debugging approaches.
+These scenarios are based on actual customer tickets and TSE experiences.
 
-**Primary Focus**: TCC troubleshooting and debugging  
-**Time**: 45 minutes  
-**Key Value**: TSE-specific problem-solving skills
+## 🎭 Scenario 1: "My Tests Work Locally But Fail in CI"
 
-## 🚨 TCC Connection Issues
+### Customer Report
+> "I can run my tests locally with Testcontainers Desktop, but they fail in GitHub Actions with timeout errors. Why does local work but CI doesn't?"
 
-### Scenario 1: "No Docker Activity Detected"
+### 🕵️ TSE Investigation Process
 
-**Customer Report**: "My tests aren't running in TCC. Desktop app shows 'No Docker activity detected'."
+#### Step 1: Gather Information
+Ask the customer for:
+- GitHub Actions workflow configuration
+- Error messages and logs
+- TCC account type (free vs paid)
+- When the issue started
 
-**Diagnostic Steps**:
-
-1. **Check Testcontainers Desktop Status**:
-   ```bash
-   # Verify Desktop app is running and connected
-   # Look for green "Connected to Testcontainers Cloud" status
-   ```
-
-2. **Verify Test Configuration**:
-   ```bash
-   # Check if tests are actually using Testcontainers
-   cd exercises/python
-   python3 -c "
-   from testcontainers.postgres import PostgresContainer
-   print('✅ Testcontainers import successful')
-   print('✅ Ready to create containers')
-   "
-   ```
-
-3. **Test TCC Connection**:
-   ```bash
-   # Run a simple TCC connectivity test
-   ./test-tcc-connection.sh
-   ```
-
-**Common Causes & Solutions**:
-
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| Desktop app not running | User forgot to start app | Start Testcontainers Desktop |
-| Not connected to cloud | Network/firewall issues | Check internet connectivity |
-| Tests not using Testcontainers | Wrong library/imports | Verify testcontainers imports |
-| Authentication failed | Invalid TCC credentials | Re-authenticate in Desktop app |
-
-### Scenario 2: "Tests Running Locally Instead of Cloud"
-
-**Customer Report**: "My tests are running locally instead of in TCC. I want them in the cloud."
-
-**Diagnostic Steps**:
-
-1. **Check Environment Variables**:
-   ```bash
-   env | grep TESTCONTAINERS
-   # Should show TCC-related variables
-   ```
-
-2. **Verify Desktop App Configuration**:
-   - Check Desktop app settings
-   - Ensure "Run with Testcontainers Cloud" is enabled
-   - Verify cloud connection status
-
-3. **Test TCC Detection**:
-   ```bash
-   # Run a test and check for TCC messages
-   cd exercises/python
-   python3 -m pytest test_user_simple.py::test_user_creation_simple -v -s
-   # Look for "testcontainers.cloud" in output
-   ```
-
-**Expected TCC Output**:
-```
-[INFO] Docker host IP address is testcontainers.cloud
-[INFO] Running tests with Testcontainers Cloud
+#### Step 2: Check Quota Status
+```bash
+# Access TCC dashboard
+# Check current month usage
+# Verify quota remaining
 ```
 
-## 🚨 Performance & Free Tier Issues
+#### Step 3: Analyze the Issue
+**Root Cause**: Free tier quota exhaustion
+- **Local Desktop**: Unlimited usage (runs on customer's machine)
+- **CI/CD**: Counts against 50-minute monthly quota
+- **Customer Confusion**: Different billing for local vs cloud
 
-### Scenario 3: "Tests Are Too Slow"
+#### Step 4: Provide Solution
+1. **Immediate Fix**: Explain quota exhaustion
+2. **Long-term**: Suggest plan upgrade or optimization
+3. **Education**: Clarify local vs CI billing differences
 
-**Customer Report**: "My TCC tests are slower than local tests. This doesn't make sense."
+### 📋 TSE Response Template
+```
+Hi [Customer],
 
-**Diagnostic Steps**:
+Thanks for reaching out about your TCC CI issues. I can help you resolve this.
 
-1. **Check First vs Subsequent Runs**:
-   ```bash
-   # First run (may be slower due to image pulling)
-   cd exercises/python
-   time python3 -m pytest test_user_simple.py -v
-   
-   # Second run (should be faster)
-   time python3 -m pytest test_user_simple.py -v
-   ```
+The issue is that your TCC free tier quota (50 minutes/month) has been exhausted. 
+Here's why local works but CI doesn't:
 
-2. **Monitor Container Startup**:
-   ```bash
-   # Run with verbose output to see timing
-   python3 -m pytest test_user_simple.py -v -s
-   ```
+• Local Desktop usage: Unlimited (runs on your machine)
+• CI/CD usage: Counts against your 50-minute quota
 
-**Common Causes & Solutions**:
+I've checked your account and you've used 52 minutes this month.
 
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| First run slow | Image pulling overhead | Normal - subsequent runs faster |
-| Network issues | Poor internet connection | Check connectivity |
-| Large images | Using heavy base images | Use alpine/slim variants |
-| No optimization | Creating new containers per test | Implement container sharing |
+Solutions:
+1. Wait until next month for quota reset
+2. Upgrade to Docker Pro ($5/month) for 100 minutes
+3. Optimize tests with container sharing
 
-### Scenario 4: "Free Tier Exhausted"
+Let me know if you'd like help with any of these options.
 
-**Customer Report**: "I can't run tests anymore. Getting 'quota exceeded' errors."
-
-**Diagnostic Steps**:
-
-1. **Check Usage in Desktop App**:
-   - Look for usage statistics
-   - Check remaining minutes
-   - Review consumption patterns
-
-2. **Monitor Test Execution**:
-   ```bash
-   # Run tests and monitor usage
-   cd exercises/python
-   python3 -m pytest test_user_simple.py -v
-   # Check Desktop app for updated usage
-   ```
-
-**Optimization Techniques**:
-
-```python
-# ❌ Inefficient - creates new container per test
-def test_user_creation():
-    with PostgresContainer() as postgres:
-        # Test code
-
-# ✅ Efficient - shares container across tests
-@pytest.fixture(scope="class")
-def postgres_container():
-    with PostgresContainer() as postgres:
-        postgres.start()
-        yield postgres
-
-class TestUserRepository:
-    def test_create_user(self, postgres_container):
-        # Reuses same container
+Best regards,
+[TSE Name]
 ```
 
-## 🚨 Authentication & Access Issues
+## 🎭 Scenario 2: "I Got a Quota Notification But Tests Still Work"
 
-### Scenario 5: "Authentication Failed"
+### Customer Report
+> "I received a notification saying I ran out of TCC minutes, but my tests are still working on my laptop. Is this a bug?"
 
-**Customer Report**: "Getting authentication errors when trying to use TCC."
+### 🕵️ TSE Investigation
 
-**Diagnostic Steps**:
+#### Step 1: Understand the Confusion
+**Customer Misunderstanding**: Thinks quota applies to all usage
 
-1. **Check TCC Account Status**:
-   - Verify account is active
-   - Check for payment issues
-   - Confirm free tier eligibility
+#### Step 2: Check Account Details
+- Verify customer's plan type
+- Check quota usage breakdown
+- Confirm local vs cloud usage
 
-2. **Test Authentication**:
-   ```bash
-   # Check if Desktop app can authenticate
-   # Look for authentication errors in Desktop app logs
-   ```
-
-3. **Re-authenticate**:
-   - Sign out of Desktop app
-   - Sign back in with valid credentials
-   - Verify cloud connection
-
-**Common Causes & Solutions**:
-
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| Expired credentials | Token/session expired | Re-authenticate in Desktop app |
-| Account suspended | Payment/billing issues | Check account status |
-| Wrong credentials | Invalid username/password | Verify login credentials |
-| Network restrictions | Corporate firewall | Check firewall settings |
-
-## 🔧 TCC-Specific Debugging Techniques
-
-### Debugging Tools & Commands
-
-1. **TCC Environment Check**:
-   ```bash
-   # Check all TCC-related environment variables
-   env | grep -i testcontainer
-   env | grep -i docker
-   ```
-
-2. **TCC Connectivity Test**:
-   ```bash
-   # Test TCC API endpoints
-   curl -s https://testcontainers.com/cloud/api/health
-   curl -s https://testcontainers.com/cloud/api/status
-   ```
-
-3. **Container Lifecycle Debugging**:
-   ```bash
-   # Run tests with verbose output
-   python3 -m pytest test_user_simple.py -v -s --tb=long
-   
-   # Check for TCC-specific messages in output
-   python3 -m pytest test_user_simple.py -v | grep -i cloud
-   ```
-
-### TCC Log Analysis
-
-**Key Log Messages to Look For**:
-
+#### Step 3: Explain the Billing Model
 ```
-✅ Good TCC Messages:
-- "Docker host IP address is testcontainers.cloud"
-- "Running tests with Testcontainers Cloud"
-- "Container started in cloud"
-- "Connected to Testcontainers Cloud"
+Local Desktop (unlimited):
+• Tests run on your machine
+• No quota consumption
+• Shows as "Local" in dashboard
 
-❌ Problem Indicators:
-- "Connection timeout"
-- "Authentication failed"
-- "Quota exceeded"
-- "Access denied"
-- "No Docker activity detected"
+CI/CD Cloud (quota applies):
+• Tests run in TCC infrastructure  
+• Consumes quota minutes
+• Shows as "Cloud" in dashboard
 ```
 
-## 🎯 TSE Troubleshooting Workflow
+### 📋 TSE Response Template
+```
+Hi [Customer],
 
-### Systematic TCC Debugging Process
+The notification is correct - you've exhausted your cloud quota, but local usage 
+is unlimited. This is working as designed:
 
-1. **Gather Information**:
-   - Customer's TCC account status
-   - Testcontainers Desktop version
-   - Operating system and network environment
-   - Error messages and logs
+• ✅ Local Desktop: Unlimited usage (your machine)
+• ❌ CI/CD Cloud: 50 minutes/month quota
 
-2. **Check Basic Requirements**:
-   - Desktop app running and connected
-   - Internet connectivity
-   - Valid TCC account
-   - Tests using Testcontainers library
+Your tests work locally because they're not consuming cloud minutes.
+CI/CD tests would fail due to quota exhaustion.
 
-3. **Test Connectivity**:
-   - Run TCC connection test
-   - Check firewall/proxy settings
-   - Verify DNS resolution
+This is the expected behavior. Would you like to upgrade your plan 
+for more cloud minutes?
 
-4. **Analyze Performance**:
-   - Check free tier usage
-   - Identify optimization opportunities
-   - Recommend container sharing
+Best regards,
+[TSE Name]
+```
 
-5. **Provide Solutions**:
-   - Step-by-step resolution
-   - Optimization recommendations
-   - Escalation if needed
+## 🎭 Scenario 3: "TCC Agent Setup Fails in GitHub Actions"
 
-## 🎯 Exercise Checklist
+### Customer Report
+> "My GitHub Action keeps failing when setting up the TCC agent. I regenerated the token but it still doesn't work."
 
-- [ ] ✅ Diagnose "No Docker activity detected"
-- [ ] ✅ Troubleshoot local vs cloud execution
-- [ ] ✅ Handle performance issues
-- [ ] ✅ Manage free tier exhaustion
-- [ ] ✅ Resolve authentication problems
-- [ ] ✅ Debug access denied issues
-- [ ] ✅ Apply systematic debugging process
-- [ ] ✅ Use TCC-specific debugging tools
+### 🕵️ TSE Investigation Process
 
-## 🚀 Next Steps
+#### Step 1: Verify Setup
+Check customer's workflow:
+```yaml
+- name: Set up Testcontainers Cloud
+  uses: atomicjar/testcontainers-cloud-setup-action@v1
+  with:
+    token: ${{ secrets.TESTCONTAINERS_CLOUD_TOKEN }}
+```
 
-Excellent! You now have TCC troubleshooting skills. You're ready for:
+#### Step 2: Common Issues to Check
+1. **Token Format**: Extra spaces, incorrect secret name
+2. **Service Account**: Inactive or expired
+3. **Quota**: Exhausted cloud minutes
+4. **Network**: Firewall or proxy issues
 
-- **Real TSE Scenarios**: Handle actual customer TCC tickets
-- **Advanced TCC Topics**: CI/CD integration, enterprise features
-- **TCC Best Practices**: Production deployment strategies
+#### Step 3: Diagnostic Commands
+```bash
+# Test token validity
+curl -H "Authorization: Bearer $TOKEN" \
+     https://api.testcontainers.cloud/v1/health
 
-**Ready to handle TCC tickets like a pro!** 🎯
+# Check quota status
+curl -H "Authorization: Bearer $TOKEN" \
+     https://api.testcontainers.cloud/v1/usage
+```
+
+### 📋 TSE Response Template
+```
+Hi [Customer],
+
+Let's troubleshoot your TCC GitHub Actions setup step by step:
+
+1. Verify your token is correctly set in GitHub secrets
+2. Check that your service account is active
+3. Confirm you have remaining quota minutes
+
+Can you run this diagnostic command in your workflow?
+```yaml
+- name: Test TCC Connection
+  run: |
+    curl -H "Authorization: Bearer ${{ secrets.TESTCONTAINERS_CLOUD_TOKEN }}" \
+         https://api.testcontainers.cloud/v1/health
+```
+
+Also, please share:
+• Your GitHub Actions workflow file
+• The exact error message
+• Screenshot of your TCC dashboard usage
+
+This will help me identify the specific issue.
+
+Best regards,
+[TSE Name]
+```
+
+## 🎭 Scenario 4: "Legacy Docker Pro Plan Doesn't Include TCC"
+
+### Customer Report
+> "I have a Docker Pro subscription but TCC is still charging me. Shouldn't it be included?"
+
+### 🕵️ TSE Investigation
+
+#### Step 1: Check Plan Type
+- Verify if customer has legacy vs new Docker Pro plan
+- Legacy plans (pre-2024) don't include TCC minutes
+- New consolidated plans include TCC
+
+#### Step 2: Explain Plan Differences
+```
+Legacy Docker Pro:
+• Docker Hub features
+• No TCC minutes included
+• Separate TCC billing
+
+New Docker Pro:
+• Docker Hub features  
+• 100 TCC minutes included
+• Consolidated billing
+```
+
+### 📋 TSE Response Template
+```
+Hi [Customer],
+
+I've checked your account and you have a legacy Docker Pro subscription 
+that doesn't include TCC minutes. Here's what changed:
+
+Legacy Plans (your current):
+• Docker Hub features only
+• TCC billed separately (50 min free tier)
+
+New Consolidated Plans:
+• Docker Hub + TCC included
+• 100 TCC minutes/month
+• $5/month for Pro
+
+Your options:
+1. Keep current plan + use TCC free tier
+2. Upgrade to new consolidated plan
+3. Purchase additional TCC minutes
+
+Would you like me to help you upgrade to the new plan?
+
+Best regards,
+[TSE Name]
+```
+
+## 🔧 TSE Troubleshooting Toolkit
+
+### Essential Commands
+```bash
+# Check TCC health
+curl https://api.testcontainers.cloud/v1/health
+
+# Verify token (replace TOKEN)
+curl -H "Authorization: Bearer TOKEN" \
+     https://api.testcontainers.cloud/v1/health
+
+# Check usage
+curl -H "Authorization: Bearer TOKEN" \
+     https://api.testcontainers.cloud/v1/usage
+```
+
+### Key Questions to Ask Customers
+1. What's your current Docker/TCC plan?
+2. When did the issue start?
+3. Are you using Desktop app or CI/CD?
+4. What's your current quota usage?
+5. Can you share error messages/logs?
+
+### Common Solutions
+1. **Quota Issues**: Upgrade plan or wait for reset
+2. **Auth Problems**: Regenerate service account token
+3. **CI Failures**: Check token format and quota
+4. **Billing Confusion**: Explain local vs cloud usage
+
+## ✅ Exercise Checklist
+
+- [ ] Handled quota exhaustion scenario
+- [ ] Explained local vs CI billing differences
+- [ ] Troubleshot GitHub Actions setup
+- [ ] Resolved legacy plan confusion
+- [ ] Applied systematic troubleshooting
+- [ ] Used proper TSE response templates
+- [ ] Understood customer communication best practices
+
+## 🚀 Congratulations!
+
+You've completed all three TCC exercises and are now ready to handle real TSE scenarios with confidence!
+
+## 💡 Key TSE Takeaways
+
+- **Quota Management**: 50 minutes/month is strict for CI
+- **Billing Education**: Local vs cloud usage is confusing for customers
+- **Systematic Approach**: Gather info → Diagnose → Provide solution
+- **Customer Communication**: Clear explanations and actionable solutions
+- **Plan Knowledge**: Understand legacy vs new Docker plans

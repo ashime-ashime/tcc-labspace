@@ -1,9 +1,11 @@
 services:
   labspace:
     environment:
-      # Pass environment variables to the LabSpace container
-      - LABSPACE_EXERCISES_PATH=/app/labspace-exercises
+      # LabSpace configuration
+      - LABSPACE_TITLE=Testcontainers Cloud Lab for TSEs
+      - LABSPACE_DESCRIPTION=Master TCC through hands-on exercises and real TSE scenarios
     volumes:
-      - ./labspace-exercises:/app/labspace-exercises:ro
-      - ./labspace.yaml:/app/labspace.yaml:ro
-      - ./README.md:/app/README.md:ro
+      # Mount lab content
+      - ./labspace-exercises:/workspace/labspace-exercises:ro
+      - ./labspace.yaml:/workspace/labspace.yaml:ro
+      - ./README.md:/workspace/README.md:ro
