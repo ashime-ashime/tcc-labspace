@@ -1,0 +1,92 @@
+GitHub Actions Log - TCC CI/CD Authentication Failure
+====================================================
+
+Run ID: 123456789
+Workflow: Test with Testcontainers Cloud
+Commit: abc123def456
+Branch: main
+Started: 2025-01-10T10:30:00Z
+
+Job: test
+-------
+
+Step 1: Checkout code ✅
+  ✓ actions/checkout@v4 completed successfully
+
+Step 2: Set up Python ✅
+  ✓ actions/setup-python@v4 completed successfully
+  ✓ Python 3.11 configured
+
+Step 3: Install dependencies ✅
+  ✓ pip install completed successfully
+  ✓ testcontainers[postgres] installed
+  ✓ psycopg2-binary installed
+  ✓ pytest installed
+
+Step 4: Run tests ❌
+  ⚠ python -m pytest tests/ -v started
+  ⚠ Test execution begins
+  ⚠ test_postgres_connection.py::test_postgres_connection started
+  
+  ❌ ERROR: Service account authentication failed
+  ❌ ERROR: Unable to connect to Testcontainers Cloud
+  ❌ ERROR: Authentication token invalid or expired
+  
+  ❌ Test failed with exit code 1
+  ❌ Action failed after 45 seconds
+
+ERROR DETAILS:
+--------------
+Testcontainers Error:
+  File "/opt/hostedtoolcache/Python/3.11.8/x64/lib/python3.11/site-packages/testcontainers/core/cloud.py", line 45, in _authenticate
+    raise AuthenticationError("Service account authentication failed")
+testcontainers.core.cloud.AuthenticationError: Service account authentication failed
+
+Stack Trace:
+  File "tests/test_postgres_connection.py", line 15, in test_postgres_connection
+    postgres.start()
+  File "/opt/hostedtoolcache/Python/3.11.8/x64/lib/python3.11/site-packages/testcontainers/postgres.py", line 45, in start
+    super().start()
+  File "/opt/hostedtoolcache/Python/3.11.8/x64/lib/python3.11/site-packages/testcontainers/core/container.py", line 89, in start
+    self._connect_to_cloud()
+  File "/opt/hostedtoolcache/Python/3.11.8/x64/lib/python3.11/site-packages/testcontainers/core/cloud.py", line 45, in _authenticate
+    raise AuthenticationError("Service account authentication failed")
+
+ANALYSIS:
+---------
+Root Cause: Missing TCC agent setup in GitHub Actions workflow
+
+Customer Configuration:
+- ✅ Service account token configured in GitHub Secrets
+- ✅ Token is valid and active
+- ✅ TCC account has quota remaining
+- ❌ TCC agent not configured in workflow
+- ❌ No TCC setup action in workflow
+
+Expected Configuration:
+- TCC setup action should be added to workflow
+- Agent should be configured before running tests
+- Tests should run in TCC cloud environment
+
+COMPARISON - Local vs CI:
+------------------------
+Local Environment (Working):
+- Testcontainers Desktop configured for TCC
+- Desktop handles TCC authentication
+- Tests run in TCC cloud environment
+- No authentication errors
+
+CI Environment (Failing):
+- No TCC agent configured
+- No TCC setup action
+- Tests try to connect to TCC without agent
+- Authentication fails
+
+SOLUTION:
+---------
+Add TCC setup action to workflow:
+- name: Set up Testcontainers Cloud
+  uses: atomicjar/testcontainers-cloud-setup-action@v1
+  with:
+    wait: true
+    token: ${{ secrets.TESTCONTAINERS_CLOUD_TOKEN }}

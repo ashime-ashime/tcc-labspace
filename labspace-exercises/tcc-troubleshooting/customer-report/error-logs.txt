@@ -1,0 +1,89 @@
+Error Logs - TCC Connection Failure
+==================================
+
+Customer: customer_user
+Date: 2025-01-10
+Issue: "No Docker activity detected" error
+
+ERROR MESSAGES:
+---------------
+
+1. Testcontainers Desktop Error:
+   "No Docker activity detected for cloud execution"
+   Location: Desktop app status bar
+   Time: 10:30:15
+   Context: Customer attempts to run test with TCC
+
+2. Python Test Error:
+   "ConnectionError: Unable to connect to Testcontainers Cloud"
+   Location: simple-test.py line 15
+   Time: 10:30:15
+   Context: Test execution fails
+
+3. Desktop Configuration Error:
+   "Cloud runtime requested but not configured"
+   Location: Desktop logs
+   Time: 10:30:15
+   Context: Test execution attempt
+
+4. Authentication Error:
+   "Cloud connection failed: authentication required"
+   Location: Desktop logs
+   Time: 10:30:15
+   Context: TCC connection attempt
+
+5. Configuration Error:
+   "Cloud mode: disabled in configuration"
+   Location: Desktop logs
+   Time: 10:30:01
+   Context: Desktop startup
+
+STACK TRACES:
+-------------
+
+Python Test Failure:
+```
+Traceback (most recent call last):
+  File "simple-test.py", line 15, in <module>
+    postgres.start()
+  File "/usr/local/lib/python3.11/site-packages/testcontainers/postgres.py", line 45, in start
+    super().start()
+  File "/usr/local/lib/python3.11/site-packages/testcontainers/core/container.py", line 89, in start
+    self._connect_to_cloud()
+  File "/usr/local/lib/python3.11/site-packages/testcontainers/core/cloud.py", line 23, in _connect_to_cloud
+    raise ConnectionError("Unable to connect to Testcontainers Cloud")
+ConnectionError: Unable to connect to Testcontainers Cloud
+```
+
+Desktop App Errors:
+```
+[ERROR] Cloud runtime requested but not configured
+[ERROR] No Docker activity detected for cloud execution
+[ERROR] Cloud connection failed: authentication required
+[WARN] Cloud mode: disabled in configuration
+```
+
+CONFIGURATION ANALYSIS:
+-----------------------
+
+Current Configuration (Broken):
+- Runtime: local
+- Cloud enabled: false
+- Organization: ""
+- Token: ""
+- Region: us-east-1
+
+Required Configuration (Fixed):
+- Runtime: cloud
+- Cloud enabled: true
+- Organization: "customer-org-12345"
+- Token: "tcct_abc123def456..."
+- Region: us-east-1
+
+COMMON CAUSES:
+--------------
+1. Desktop not configured for TCC after sign-up
+2. Cloud mode not enabled in Desktop settings
+3. Missing or invalid service account token
+4. Desktop not restarted after TCC configuration
+5. Incorrect organization ID in configuration

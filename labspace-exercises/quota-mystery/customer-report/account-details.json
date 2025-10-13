@@ -1,0 +1,36 @@
+{
+  "customer_info": {
+    "username": "customer_user",
+    "email": "customer@example.com",
+    "account_type": "legacy_trial",
+    "docker_hub_plan": "Docker Pro (Legacy)",
+    "tcc_org_id": "3294",
+    "tcc_plan_type": "trial_legacy"
+  },
+  "billing_details": {
+    "docker_pro_status": "active_until_2025-02-28",
+    "docker_pro_plan": "legacy_subscription",
+    "tcc_included": false,
+    "tcc_separate_billing": true
+  },
+  "usage_limits": {
+    "free_tier_minutes": 50,
+    "free_tier_type": "one_time_only",
+    "current_month_usage": 52,
+    "quota_exceeded": true,
+    "quota_reset": "never"
+  },
+  "account_history": {
+    "legacy_org_id": "3294",
+    "new_org_id": "13930",
+    "new_org_status": "disabled",
+    "new_org_reason": "pre_dsop_entitlements",
+    "active_org": "3294"
+  },
+  "recent_activity": {
+    "last_successful_ci": "2025-01-08T14:22:00Z",
+    "quota_exhausted_date": "2025-01-09T00:00:00Z",
+    "local_usage_type": "unlimited",
+    "ci_usage_type": "quota_limited"
+  }
+}

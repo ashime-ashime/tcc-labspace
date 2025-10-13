@@ -1,0 +1,44 @@
+name: Test with Testcontainers Cloud
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Java
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        
+    - name: Cache Maven dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        
+    # ❌ BROKEN: Missing TCC setup step
+    # Customer expects tests to run in TCC but hasn't configured TCC agent
+    # This is why the workflow times out - no TCC connection established
+    
+    - name: Run tests
+      run: mvn test
+      env:
+        # ❌ BROKEN: Token is set but TCC agent not configured
+        TESTCONTAINERS_CLOUD_TOKEN: ${{ secrets.TESTCONTAINERS_CLOUD_TOKEN }}
+        
+    # ❌ MISSING: TCC agent setup step
+    # Should include:
+    # - name: Set up Testcontainers Cloud
+    #   uses: atomicjar/testcontainers-cloud-setup-action@v1
+    #   with:
+    #     wait: true
+    #     token: ${{ secrets.TESTCONTAINERS_CLOUD_TOKEN }}
