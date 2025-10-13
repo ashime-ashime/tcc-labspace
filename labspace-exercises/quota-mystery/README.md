@@ -1,149 +1,125 @@
-# Exercise 1: The Quota Mystery - A Real TSE Scenario
+# Exercise 1: The Quota Mystery
 
-## 🎯 Learning Objectives
+## 🚨 Customer Issue Report
 
-By the end of this exercise, you will:
-- Investigate complex TCC quota and billing issues
-- Understand legacy vs new Docker plan differences
-- Diagnose local vs CI usage billing models
-- Handle customer confusion about quota limits
-- Practice systematic TSE investigation methodology
+### Support Ticket Details
 
-## 📚 Prerequisites
+**Subject**: GitHub Actions CI pipeline timeout with Testcontainers Cloud
 
-- Basic understanding of TCC and GitHub Actions
-- Familiarity with Docker billing models
-- Experience with customer support workflows
+**Priority**: High - Blocking deployments
 
-## 🚨 The Customer Report
+**Customer**: Enterprise development team
 
-### Initial Support Ticket
-> **Subject**: Testcontainers Cloud not working in GitHub Actions
-> 
-> **Description**: Hi, since 2 days the GitHub Action to set-up Testcontainers Cloud in our pipelines is failing with a timeout. We've tried to regenerate the service account token but it still fails. You can see an example of an affected repository here: [customer-repo-example]
-> 
-> Please, can you help me in figuring out what is going wrong?
-> 
-> Thanks!
+**Description**: 
+Our CI/CD pipeline started failing 48 hours ago. The GitHub Actions workflow that sets up Testcontainers Cloud is timing out after approximately 2 minutes. We've attempted to resolve this by regenerating our service account token, but the issue persists.
 
-### Customer Follow-up Information
-> The customer reports:
-> - Tests work perfectly from their local machine
-> - GitHub Actions timeout after 2 minutes
-> - No recent changes to Testcontainers setup
-> - Only a Maven dependency version bump (OpenRewrite plugin)
-> - Error happens before any Maven command runs
-> - Regenerated service account token with no effect
+Our local development environment works perfectly - tests run without issues when executed from developer machines. However, the same tests fail in our GitHub Actions environment.
 
-## 🕵️ Your Investigation Mission
+**Technical Details**:
+- Pipeline fails during TCC setup phase
+- Timeout occurs before any test execution begins
+- No recent changes to our Testcontainers configuration
+- Only dependency update was OpenRewrite plugin version bump
+- Service account token regeneration had no effect
 
-You are the TSE assigned to this case. Your task is to:
+**Business Impact**: 
+This is blocking our deployment pipeline and affecting our release schedule.
 
-1. **Investigate the failing GitHub Actions**
-2. **Understand why local works but CI fails**
+## 🕵️ Investigation Mission
+
+As the assigned TSE, you need to:
+
+1. **Analyze the failing CI/CD pipeline**
+2. **Determine why local works but CI fails**
 3. **Identify the root cause**
-4. **Provide a clear solution to the customer**
+4. **Provide actionable solution**
 
-## 🚀 Getting Started
+## 🔍 Investigation Process
 
-### Step 1: Examine the Customer's Environment
+### Phase 1: Environment Analysis
 
-Navigate to the customer's repository and examine the failing workflow:
+Examine the customer's CI configuration:
 
 ```bash
 cd customer-report/broken-repo
 cat .github/workflows/test.yml
 ```
 
-### Step 2: Analyze the GitHub Actions Logs
+Review the failure logs:
 
 ```bash
 cat customer-report/github-actions-logs.txt
 ```
 
-### Step 3: Check TCC Account Status
+### Phase 2: Account Investigation
+
+Check account configuration:
 
 ```bash
-# Examine the customer's account information
 cat customer-report/account-details.json
 ```
 
-### Step 4: Review Usage Dashboard
+Analyze usage patterns:
 
 ```bash
 cat customer-report/usage-dashboard-screenshot.txt
 ```
 
-## 🔍 Investigation Points
+## 🎯 Key Investigation Areas
 
-### Key Questions to Answer:
-1. **Why does local testing work but CI fails?**
-2. **What changed 2 days ago?**
-3. **Is this a quota/billing issue?**
-4. **Are there multiple accounts or orgs involved?**
-5. **What's the customer's current plan type?**
+### Critical Questions:
+1. **What's causing the CI timeout?**
+2. **Why does local execution work?**
+3. **Is this account-related or configuration-related?**
+4. **What changed 48 hours ago?**
+5. **Are there billing or quota implications?**
 
-### Diagnostic Commands:
+### Diagnostic Approach:
 ```bash
-# Check TCC API health
+# Verify TCC service status
 curl https://api.testcontainers.cloud/v1/health
 
-# Verify service account token (if available)
-curl -H "Authorization: Bearer $TOKEN" \
-     https://api.testcontainers.cloud/v1/health
-
-# Check quota status
+# Check account quota (if token available)
 curl -H "Authorization: Bearer $TOKEN" \
      https://api.testcontainers.cloud/v1/usage
+
+# Validate service account permissions
+curl -H "Authorization: Bearer $TOKEN" \
+     https://api.testcontainers.cloud/v1/account
 ```
-
-## 🎯 Expected Learning Outcomes
-
-After completing this exercise, you should understand:
-- How to systematically investigate TCC quota issues
-- The difference between legacy and new Docker plans
-- Why local vs CI usage is billed differently
-- How to handle customer confusion about billing models
-- When and how to escalate complex account issues
 
 ## 📋 Investigation Checklist
 
-- [ ] Reviewed customer's GitHub Actions workflow
-- [ ] Analyzed failure logs and error messages
-- [ ] Checked customer's TCC account status
-- [ ] Verified quota usage and limits
-- [ ] Identified root cause of the issue
-- [ ] Prepared customer response with solution
-- [ ] Documented investigation findings
+- [ ] Analyzed GitHub Actions workflow configuration
+- [ ] Reviewed failure logs and error patterns
+- [ ] Examined customer account status
+- [ ] Checked quota usage and billing information
+- [ ] Identified root cause
+- [ ] Prepared customer communication
+- [ ] Documented resolution steps
 
-## 💡 Hints
+## 💡 Investigation Hints
 
 <details>
-<summary>Click to reveal hints (use only if stuck)</summary>
+<summary>Click for hints (use only if stuck)</summary>
 
-**Hint 1**: Check the customer's account type - are they on a legacy or new plan?
+**Hint 1**: Focus on account type - legacy vs current billing models
 
-**Hint 2**: Look at the usage dashboard carefully - what type of usage is shown?
+**Hint 2**: Examine usage dashboard data carefully
 
-**Hint 3**: Consider the difference between local and CI usage billing.
+**Hint 3**: Consider local vs cloud execution differences
 
-**Hint 4**: The issue might be related to quota limits, not technical configuration.
+**Hint 4**: This may be a quota/billing issue, not technical
 </details>
 
-## 🎉 Success Criteria
+## ✅ Resolution Criteria
 
-You've successfully completed this exercise when you can:
-- Identify that the customer hit their quota limit
-- Explain why local works but CI fails
-- Understand the legacy plan limitations
-- Provide clear next steps for the customer
+Complete when you can:
+- Identify the specific cause of CI failures
+- Explain local vs CI execution differences
+- Understand account limitations
+- Provide clear resolution path
 
-## 🚀 Next Steps
+## 🚀 Next Exercise
 
-Once you've solved this case, you'll be ready for:
-- **Exercise 2**: The Authentication Nightmare
-- **Exercise 3**: The Performance Mystery
-
----
-
-*This exercise is based on real TSE scenarios but all customer details have been anonymized.*
+Ready for **Exercise 2: The Connection Mystery**
