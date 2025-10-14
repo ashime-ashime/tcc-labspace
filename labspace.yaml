@@ -1,5 +1,5 @@
 title: "Testcontainers Cloud (TCC) Lab for TSEs"
-description: "Master Testcontainers Cloud through hands-on exercises and real TSE troubleshooting scenarios"
+description: "Master Testcontainers Cloud through hands-on break-and-fix exercise based on real TSE scenarios"
 version: "1.0.0"
 author: "Docker TSE Team"
 tags:
@@ -10,34 +10,25 @@ tags:
   - tse
   - troubleshooting
   - github-actions
-difficulty: "advanced"
-duration: "3-4 hours"
+  - break-and-fix
+difficulty: "intermediate"
+duration: "45 minutes"
 prerequisites:
-  - "Advanced Docker and container orchestration knowledge"
-  - "Enterprise CI/CD and authentication system experience"
-  - "Deep understanding of networking and security protocols"
+  - "Basic Docker Desktop knowledge (to run the lab container)"
+  - "Familiarity with customer support workflows"
+  - "Experience with systematic troubleshooting approaches"
+  - "No TCC setup required - everything is pre-configured!"
 learning_objectives:
-  - "Master TCC architecture and enterprise integration patterns"
-  - "Diagnose complex TCC connectivity and performance issues"
-  - "Handle advanced GitHub Actions TCC integration problems"
-  - "Troubleshoot enterprise authentication and networking scenarios"
-  - "Provide sophisticated customer support for complex TCC deployments"
+  - "Diagnose and resolve TCC billing and quota issues"
+  - "Apply systematic TSE investigation methodology to TCC scenarios"
+  - "Communicate complex TCC solutions professionally to customers"
+  - "Understand local vs CI execution differences in TCC"
 exercises:
-  - id: "tcc-setup"
-    title: "TCC Architecture and Advanced Configuration"
-    description: "Deep dive into TCC infrastructure and enterprise configuration"
+  - id: "quota-mystery"
+    title: "The Quota Mystery (TCC Billing & Quotas)"
+    description: "Investigate and resolve customer issues related to TCC free tier limits and billing confusion."
     duration: "45 minutes"
     difficulty: "intermediate"
-  - id: "tcc-github-actions"
-    title: "Enterprise TCC CI/CD Integration"
-    description: "Advanced TCC integration in complex enterprise pipelines"
-    duration: "60 minutes"
-    difficulty: "advanced"
-  - id: "tcc-troubleshooting"
-    title: "Advanced TSE TCC Troubleshooting"
-    description: "Handle complex enterprise TCC issues and sophisticated customer scenarios"
-    duration: "75 minutes"
-    difficulty: "expert"
 resources:
   - title: "Testcontainers Cloud Documentation"
     url: "https://testcontainers.com/cloud/"
