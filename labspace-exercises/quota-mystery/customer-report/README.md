@@ -6,7 +6,7 @@ To make the TSE investigation more realistic and interactive, this directory inc
 
 ### Mock Server Status
 
-**The mock TCC API server is already running automatically in the background.** It provides realistic API responses based on the customer's actual data on `http://localhost:8080`.
+**The mock TCC API server starts automatically and silently in the background.** It provides realistic API responses based on the customer's actual data on `http://localhost:8080`. No spoiler information is shown during startup to preserve the mystery for TSEs.
 
 ### Pre-configured Test Tokens
 
@@ -17,7 +17,7 @@ The mock server includes valid tokens for testing:
 
 ### Diagnostic Commands to Test
 
-TSEs can execute these diagnostic commands:
+TSEs can execute these diagnostic commands during the investigation (available through the interactive game):
 
 ```bash
 # 1. Check TCC service health
@@ -89,18 +89,20 @@ curl -H "Authorization: Bearer tcc-lab-token-12345" \
 
 This mock API allows TSEs to:
 
-1. **Test diagnostic commands** in a realistic environment
+1. **Test diagnostic commands** in a realistic environment during the interactive game
 2. **Experience real API responses** without needing actual TCC credentials
 3. **Understand authentication flows** and error handling
 4. **Verify quota status** and billing model differences
 5. **Practice troubleshooting** with live API interactions
+6. **Discover clues progressively** without spoiler information
 
-## 🔍 Key Insights for TSEs
+## 🔍 Investigation Process
 
+**TSEs must discover these insights through the interactive investigation:**
 - **Service is operational** (health check passes)
 - **Authentication works** (valid tokens get 200 responses)
 - **Quota is exceeded** (52/50 minutes used)
 - **Billing model is separate** (tcc_included: false)
 - **Plan type is legacy** (trial_legacy)
 
-This directly supports the root cause analysis: quota exhaustion due to legacy plan limitations.
+**The mystery is preserved until TSEs run the diagnostic tools themselves!**

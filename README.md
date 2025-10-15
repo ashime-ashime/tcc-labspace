@@ -12,10 +12,10 @@ docker run -it ashimeashime006/tcc-lab:latest
 ```
 
 **🎮 Complete Enhanced Interactive Experience:**
-- **📋 Customer Analysis Phase** - Read ticket, explore supporting documents, take assessment quiz
-- **🔧 Investigation Toolbox** - 10 diagnostic tools (6 essential + 4 red herrings) with command previews
+- **📋 Customer Analysis Phase** - Read ticket, explore supporting documents, take assessment quiz (2 attempts)
+- **🔧 Investigation Toolbox** - 10 diagnostic tools (6 essential + 4 red herrings) with randomized order
 - **🕵️‍♂️ Active Investigation** - Run real commands, discover clues progressively, strategic decision making
-- **🎯 Solution Evaluation** - Evidence-based solution validation with detailed feedback and explanations
+- **🎯 Solution Evaluation** - Evidence-based solution validation with comprehensive feedback and guidance
 
 **No Setup Required!** TCC account, service tokens, and Testcontainers Desktop are pre-configured.
 
@@ -27,7 +27,7 @@ docker run -it ashimeashime006/tcc-lab:latest
 - **Skills**: Customer investigation, strategic thinking, evidence analysis, professional communication
 - **Type**: Complete enhanced interactive TSE training simulation
 - **Experience**: Realistic workflow from customer ticket analysis to evidence-based solution proposal
-- **Features**: Real command execution, red herring tools, evidence-based solution evaluation
+- **Features**: Real command execution, randomized tool order, multiple quiz attempts, comprehensive feedback
 
 ## Prerequisites
 
