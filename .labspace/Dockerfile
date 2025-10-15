@@ -31,5 +31,8 @@ WORKDIR /workspace
 RUN mkdir -p /workspace/.testcontainers \
     && mkdir -p /workspace/.testcontainers-desktop
 
-# Start bash directly - no hanging issues
-CMD ["/bin/bash"]
+# Make welcome script executable
+RUN chmod +x /workspace/.labspace/welcome.sh
+
+# Start mock API server and welcome script, then bash
+CMD ["/bin/bash", "-c", "/workspace/.labspace/start-mock-api.sh && /workspace/.labspace/welcome.sh && /bin/bash"]

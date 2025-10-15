@@ -38,6 +38,18 @@ As the assigned TSE, you need to:
 
 ### Phase 1: Environment Analysis
 
+**Run Diagnostic Commands (Mock API is already running):**
+```bash
+# Test service health
+curl http://localhost:8080/v1/health
+
+# Check quota status
+curl -H "Authorization: Bearer tcc-lab-token-12345" http://localhost:8080/v1/usage
+
+# Verify account details
+curl -H "Authorization: Bearer tcc-lab-token-12345" http://localhost:8080/v1/account
+```
+
 Examine the customer's CI configuration:
 
 ```bash
@@ -75,21 +87,19 @@ cat customer-report/usage-dashboard-screenshot.txt
 5. **Are there billing or quota implications?**
 
 ### Diagnostic Approach:
-```bash
-# Verify TCC service status
-curl https://api.testcontainers.cloud/v1/health
 
-# Check account quota (if token available)
-curl -H "Authorization: Bearer $TOKEN" \
-     https://api.testcontainers.cloud/v1/usage
+**The mock TCC API server is already running in the background. Use the diagnostic commands above to investigate the issue.**
 
-# Validate service account permissions
-curl -H "Authorization: Bearer $TOKEN" \
-     https://api.testcontainers.cloud/v1/account
-```
+**Expected Results:**
+- **Health**: Service operational (200 OK) - confirms connectivity
+- **Usage**: Quota exceeded - 52/50 minutes used - **ROOT CAUSE**
+- **Account**: Legacy trial plan with separate TCC billing - explains limitations
 
 ## 📋 Investigation Checklist
 
+- [ ] Verified mock TCC API server is running
+- [ ] Ran diagnostic curl commands
+- [ ] Verified API responses and quota status
 - [ ] Analyzed GitHub Actions workflow configuration
 - [ ] Reviewed failure logs and error patterns
 - [ ] Examined customer account status
