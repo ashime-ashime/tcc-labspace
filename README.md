@@ -5,21 +5,28 @@ A hands-on lab for Technical Support Engineers to master Testcontainers Cloud th
 ## Quick Start
 
 ```bash
-# Run the pre-configured interactive lab
+# Run the enhanced interactive TSE investigation game
 docker run -it ashimeashime006/tcc-lab:latest
 
-# TCC is already configured - dive directly into troubleshooting!
+# The mystery investigation game starts automatically!
 ```
+
+**🎮 Enhanced Interactive Experience:**
+- **📋 Customer Analysis Phase** - Read ticket, take assessment quiz, form hypothesis
+- **🔧 Investigation Toolbox** - See commands + expected outputs + analysis tips
+- **🕵️‍♂️ Active Investigation** - Run diagnostic tools with confidence
+- **🎯 Solution Proposal** - Apply findings, draft customer response
 
 **No Setup Required!** TCC account, service tokens, and Testcontainers Desktop are pre-configured.
 
 ## Exercise
 
-### The Quota Mystery (45 minutes)
+### The Quota Mystery (45-60 minutes)
 - **Scenario**: Customer hitting TCC quota limits in GitHub Actions
 - **Focus**: Billing models, usage tracking, and quota analysis
 - **Skills**: Customer investigation and quota management
-- **Type**: Complete break-and-fix scenario with real customer data
+- **Type**: Enhanced interactive TSE training simulation
+- **Experience**: Complete investigation workflow from ticket analysis to solution proposal
 
 ## Prerequisites
 

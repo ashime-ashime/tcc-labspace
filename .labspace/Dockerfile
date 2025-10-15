@@ -34,5 +34,5 @@ RUN mkdir -p /workspace/.testcontainers \
 # Make welcome script executable
 RUN chmod +x /workspace/.labspace/welcome.sh
 
-# Start mock API server and welcome script, then bash
-CMD ["/bin/bash", "-c", "/workspace/.labspace/start-mock-api.sh && /workspace/.labspace/welcome.sh && /bin/bash"]
+# Start mock API server, welcome script, and mystery investigation game
+CMD ["/bin/bash", "-c", "/workspace/.labspace/start-mock-api.sh && /workspace/.labspace/welcome.sh && echo '' && echo '🎮 Starting Interactive Mystery Investigation Game...' && echo '' && cd /workspace/labspace-exercises/quota-mystery && python3 .investigation-engine.py"]
