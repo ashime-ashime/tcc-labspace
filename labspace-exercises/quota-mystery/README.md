@@ -1,160 +1,76 @@
-# 🎮 The Quota Mystery - Interactive TSE Investigation Game
+# 🎮 The Quota Mystery - Enhanced Interactive TSE Investigation
 
 ## 🕵️‍♂️ Mission Brief
 
 **You are a TSE detective** assigned to solve a critical customer issue. Your mission: investigate why a customer's CI/CD pipeline is failing and propose a solution.
 
-**🎯 Game Features:**
-- **Interactive investigation paths** - Choose your own adventure
-- **Progressive clue discovery** - Unlock insights as you investigate  
-- **Educational insights** - Learn with each finding
-- **Scoring system** - Earn points for good detective work
-- **Real diagnostic commands** - Practice actual TSE skills
+**🎯 Enhanced Experience Features:**
+- **📋 Customer Analysis Phase** - Read ticket, take assessment quiz, form hypothesis
+- **🔧 Investigation Toolbox** - See commands + expected outputs + analysis tips
+- **🕵️‍♂️ Active Investigation** - Run diagnostic tools with confidence
+- **🎯 Solution Proposal** - Apply findings, draft customer response
+- **📊 Scoring System** - Earn points for good detective work
+- **🔄 Freedom to Explore** - Go back to customer info or toolbox anytime
 
-## 🚀 Quick Start - Interactive Mode
+## 🚀 Quick Start - Enhanced Interactive Mode
 
 ```bash
-# Start the investigation game
+# Start the enhanced investigation game
 ./start-investigation.sh
 
-# Or run the engine directly
+# Or run the enhanced engine directly
 python3 .investigation-engine.py
 ```
 
-## 📋 Traditional Investigation Mode
+## 🎮 Enhanced Experience Overview
 
-If you prefer the traditional step-by-step approach:
+**The enhanced experience provides a complete TSE training simulation with 4 structured phases:**
 
-## 🚨 Customer Issue Report
+### 📋 Phase 1: Customer Analysis
+- **Read complete customer ticket** with technical details and business impact
+- **Take assessment quiz** to test your initial hypothesis
+- **Form strategic approach** based on customer context
+- **Earn points** for good analytical thinking
 
-### Support Ticket Details
+### 🔧 Phase 2: Investigation Toolbox
+- **Browse 6 diagnostic tools** with full command previews
+- **See expected outputs** for each command (real JSON, logs, configs)
+- **Get analysis tips** explaining what to look for
+- **Plan investigation strategy** with confidence
 
-**Subject**: GitHub Actions CI pipeline timeout with Testcontainers Cloud
+### 🕵️‍♂️ Phase 3: Active Investigation
+- **Run diagnostic tools** in any order you prefer
+- **See real command outputs** when tools are executed
+- **Discover clues progressively** with educational insights
+- **Go back anytime** to customer info or toolbox
 
-**Priority**: High - Blocking deployments
+### 🎯 Phase 4: Solution Proposal
+- **Apply your findings** to propose solutions
+- **Get feedback** on solution effectiveness
+- **Learn customer communication** best practices
+- **Complete the investigation** with professional response
 
-**Customer**: Enterprise development team
+**🎯 Perfect for Senior TSE skill development with realistic workflow and educational depth!**
 
-**Description**: 
-Our CI/CD pipeline started failing 48 hours ago. The GitHub Actions workflow that sets up Testcontainers Cloud is timing out after approximately 2 minutes. We've attempted to resolve this by regenerating our service account token, but the issue persists.
+## 🎯 Learning Objectives
 
-Our local development environment works perfectly - tests run without issues when executed from developer machines. However, the same tests fail in our GitHub Actions environment.
+After completing this enhanced investigation, you will have:
 
-**Technical Details**:
-- Pipeline fails during TCC setup phase
-- Timeout occurs before any test execution begins
-- No recent changes to our Testcontainers configuration
-- Only dependency update was OpenRewrite plugin version bump
-- Service account token regeneration had no effect
+- **📋 Customer Analysis Skills** - Read tickets systematically, form hypotheses
+- **🔧 Diagnostic Tool Mastery** - Use real TSE commands with confidence
+- **🕵️‍♂️ Investigation Methodology** - Follow evidence trails systematically  
+- **🎯 Solution Communication** - Draft professional customer responses
+- **📊 TCC Expertise** - Understand quota, billing, and configuration issues
 
-**Business Impact**: 
-This is blocking our deployment pipeline and affecting our release schedule.
+## 🚀 Ready to Start?
 
-## 🕵️ Investigation Mission
+**The enhanced interactive investigation game starts automatically when you run the container!**
 
-As the assigned TSE, you need to:
+**Get ready for the most realistic TSE training experience with:**
+- Real customer scenarios
+- Actual diagnostic commands
+- Professional investigation workflow
+- Educational insights and scoring
+- Complete skill development journey
 
-1. **Analyze the failing CI/CD pipeline**
-2. **Determine why local works but CI fails**
-3. **Identify the root cause**
-4. **Provide actionable solution**
-
-## 🔍 Investigation Process
-
-### Phase 1: Environment Analysis
-
-**Run Diagnostic Commands (Mock API is already running):**
-```bash
-# Test service health
-curl http://localhost:8080/v1/health
-
-# Check quota status
-curl -H "Authorization: Bearer tcc-lab-token-12345" http://localhost:8080/v1/usage
-
-# Verify account details
-curl -H "Authorization: Bearer tcc-lab-token-12345" http://localhost:8080/v1/account
-```
-
-Examine the customer's CI configuration:
-
-```bash
-cd customer-report/broken-repo
-cat .github/workflows/test.yml
-```
-
-Review the failure logs:
-
-```bash
-cat customer-report/github-actions-logs.txt
-```
-
-### Phase 2: Account Investigation
-
-Check account configuration:
-
-```bash
-cat customer-report/account-details.json
-```
-
-Analyze usage patterns:
-
-```bash
-cat customer-report/usage-dashboard-screenshot.txt
-```
-
-## 🎯 Key Investigation Areas
-
-### Critical Questions:
-1. **What's causing the CI timeout?**
-2. **Why does local execution work?**
-3. **Is this account-related or configuration-related?**
-4. **What changed 48 hours ago?**
-5. **Are there billing or quota implications?**
-
-### Diagnostic Approach:
-
-**The mock TCC API server is already running in the background. Use the diagnostic commands above to investigate the issue.**
-
-**Expected Results:**
-- **Health**: Service operational (200 OK) - confirms connectivity
-- **Usage**: Quota exceeded - 52/50 minutes used - **ROOT CAUSE**
-- **Account**: Legacy trial plan with separate TCC billing - explains limitations
-
-## 📋 Investigation Checklist
-
-- [ ] Verified mock TCC API server is running
-- [ ] Ran diagnostic curl commands
-- [ ] Verified API responses and quota status
-- [ ] Analyzed GitHub Actions workflow configuration
-- [ ] Reviewed failure logs and error patterns
-- [ ] Examined customer account status
-- [ ] Checked quota usage and billing information
-- [ ] Identified root cause
-- [ ] Prepared customer communication
-- [ ] Documented resolution steps
-
-## 💡 Investigation Hints
-
-<details>
-<summary>Click for hints (use only if stuck)</summary>
-
-**Hint 1**: Focus on account type - legacy vs current billing models
-
-**Hint 2**: Examine usage dashboard data carefully
-
-**Hint 3**: Consider local vs cloud execution differences
-
-**Hint 4**: This may be a quota/billing issue, not technical
-</details>
-
-## ✅ Resolution Criteria
-
-Complete when you can:
-- Identify the specific cause of CI failures
-- Explain local vs CI execution differences
-- Understand account limitations
-- Provide clear resolution path
-
-## 🚀 Next Exercise
-
-Ready for **Exercise 2: The Connection Mystery**
+**Perfect for Senior TSE skill building!** 🎯
