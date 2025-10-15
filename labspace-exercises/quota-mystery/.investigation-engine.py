@@ -122,33 +122,33 @@ Quota Exhausted: 2025-01-09 00:00:00""",
             }
         ]
 
-        # Enhanced analysis quiz
+        # Enhanced analysis quiz (now based on investigation evidence)
         self.analysis_quiz = {
-            "question": "Based on the ticket and supporting documents, what's your initial hypothesis?",
+            "question": "Based on your investigation findings, what's the root cause?",
             "options": {
                 "A": {
                     "text": "Authentication/Token issue",
-                    "insight": "Good thinking! Token regeneration suggests auth problems, but customer already tried this.",
+                    "insight": "Your investigation showed the token is valid and authentication works. This isn't the root cause.",
                     "points": 3
                 },
                 "B": {
                     "text": "Quota/Billing problem",
-                    "insight": "🎯 EXCELLENT! The logs show 'Quota exceeded' and account shows 52/50 minutes used. This is the root cause!",
+                    "insight": "🎯 EXCELLENT! Your investigation revealed quota exceeded (52/50 minutes) and legacy trial plan with separate billing. This is the root cause!",
                     "points": 20
                 },
                 "C": {
                     "text": "Network connectivity issue",
-                    "insight": "Reasonable thought, but customer already verified network connectivity.",
+                    "insight": "Your health check investigation showed TCC service is operational and network is fine.",
                     "points": 2
                 },
                 "D": {
                     "text": "Configuration error",
-                    "insight": "Partially correct! Missing TCC setup action is a secondary issue, but not the root cause.",
+                    "insight": "Good catch! Your workflow analysis revealed missing testcontainers-cloud-setup-action, but this is secondary to the quota issue.",
                     "points": 8
                 },
                 "E": {
                     "text": "Service outage",
-                    "insight": "Customer already checked - TCC service is operational.",
+                    "insight": "Your health check investigation confirmed TCC service is operational. Not the root cause.",
                     "points": 1
                 }
             }
@@ -301,12 +301,12 @@ Quota Exhausted: 2025-01-09 00:00:00""",
         }
 
     def start_investigation(self):
-        """Start the complete enhanced investigation experience"""
+        """Start the complete enhanced investigation experience with Investigation-First Flow"""
         self.clear_screen()
         self.print_banner()
         
-        # Phase 1: Enhanced Customer Analysis
-        self.enhanced_customer_analysis_phase()
+        # Phase 1: Customer Analysis (NO QUIZ - just read ticket and documents)
+        self.customer_analysis_phase()
         
         # Phase 2: Investigation Toolbox Preview
         self.investigation_preview_phase()
@@ -314,7 +314,10 @@ Quota Exhausted: 2025-01-09 00:00:00""",
         # Phase 3: Active Investigation with Real Commands
         self.active_investigation_phase()
         
-        # Phase 4: Enhanced Solution Proposal
+        # Phase 4: Assessment Quiz (AFTER investigation)
+        self.assessment_quiz_phase()
+        
+        # Phase 5: Enhanced Solution Proposal
         self.enhanced_solution_phase()
 
     def print_banner(self):
@@ -331,10 +334,10 @@ Quota Exhausted: 2025-01-09 00:00:00""",
         """Clear the terminal screen"""
         os.system('clear' if os.name == 'posix' else 'cls')
 
-    def enhanced_customer_analysis_phase(self):
-        """Phase 1: Enhanced Customer Analysis with Supporting Documents"""
-        print("📋 PHASE 1: ENHANCED CUSTOMER ANALYSIS")
-        print("=" * 45)
+    def customer_analysis_phase(self):
+        """Phase 1: Customer Analysis - Read ticket and explore documents (NO QUIZ)"""
+        print("📋 PHASE 1: CUSTOMER ANALYSIS")
+        print("=" * 35)
         print()
         
         # Show customer ticket
@@ -352,8 +355,9 @@ Quota Exhausted: 2025-01-09 00:00:00""",
         # Optional document exploration
         self.allow_document_exploration()
         
-        # Assessment quiz
-        self.take_assessment_quiz()
+        print()
+        print("🎯 Ready to investigate? You'll form your hypothesis AFTER gathering evidence!")
+        input("⏎ Press Enter to proceed to Investigation Toolbox...")
 
     def show_supporting_documents(self):
         """Show supporting documents with key insights"""
@@ -607,10 +611,27 @@ Quota Exhausted: 2025-01-09 00:00:00""",
             print(f"🔍 Still need {remaining} essential tools to complete investigation")
             return False
 
-    def enhanced_solution_phase(self):
-        """Phase 4: Enhanced Solution Proposal with Evidence-Based Evaluation"""
+    def assessment_quiz_phase(self):
+        """Phase 4: Assessment Quiz (AFTER investigation)"""
         self.clear_screen()
-        print("🎯 PHASE 4: ENHANCED SOLUTION PROPOSAL")
+        self.print_banner()
+        print("🧠 PHASE 4: ASSESSMENT QUIZ")
+        print("=" * 35)
+        print()
+        print("Now that you've gathered evidence through investigation,")
+        print("let's test your understanding of the root cause!")
+        print()
+        
+        # Take assessment quiz
+        self.take_assessment_quiz()
+        
+        print()
+        input("⏎ Press Enter to proceed to Solution Proposal...")
+
+    def enhanced_solution_phase(self):
+        """Phase 5: Enhanced Solution Proposal with Evidence-Based Evaluation"""
+        self.clear_screen()
+        print("🎯 PHASE 5: ENHANCED SOLUTION PROPOSAL")
         print("=" * 45)
         print()
         print("Based on your investigation findings, propose solutions to the customer.")
