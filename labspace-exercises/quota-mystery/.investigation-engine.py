@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Enhanced Interactive TSE Investigation Engine
-Complete TSE training simulation with customer analysis, investigation toolbox, and real outputs
+Complete Enhanced Interactive TSE Investigation Engine
+Real TSE training simulation with customer analysis, real command execution, and evidence-based solutions
 """
 
 import json
@@ -9,13 +9,13 @@ import os
 import sys
 from datetime import datetime
 
-class EnhancedInvestigationEngine:
+class CompleteEnhancedInvestigationEngine:
     def __init__(self):
         self.clues_found = []
         self.score = 0
-        self.max_score = 150
-        self.max_clues = 6
-        self.game_state = 'customer_analysis'  # customer_analysis, investigation_preview, active_investigation, solution_phase
+        self.max_score = 200
+        self.max_clues = 6  # Essential clues only
+        self.game_state = 'customer_analysis'
         
         # Customer scenario data
         self.customer_scenario = {
@@ -27,7 +27,7 @@ class EnhancedInvestigationEngine:
             "customer_tried": "Regenerated service account token"
         }
 
-        # Customer ticket details
+        # Complete customer ticket
         self.customer_ticket = """
 📞 SUPPORT TICKET #TCC-2025-001
 ================================
@@ -65,45 +65,12 @@ What We've Tried:
 - Restarted GitHub Actions runners (no effect)
 """
 
-        # Customer analysis quiz
-        self.analysis_quiz = {
-            "question": "Based on your analysis of the customer ticket, what's your initial hypothesis?",
-            "options": {
-                "A": {
-                    "text": "Authentication/Token issue",
-                    "insight": "Good thinking! Token regeneration suggests auth problems, but this might be a red herring.",
-                    "points": 5
-                },
-                "B": {
-                    "text": "Quota/Billing problem",
-                    "insight": "Excellent insight! The '48 hours ago' timeline and local vs CI difference strongly suggests quota issues.",
-                    "points": 15
-                },
-                "C": {
-                    "text": "Network connectivity issue",
-                    "insight": "Reasonable thought, but customer already verified network connectivity.",
-                    "points": 3
-                },
-                "D": {
-                    "text": "Configuration error",
-                    "insight": "Possible, but customer says no recent configuration changes.",
-                    "points": 7
-                },
-                "E": {
-                    "text": "Service outage",
-                    "insight": "Customer already checked - TCC service is operational.",
-                    "points": 2
-                }
-            }
-        }
-
-        # Investigation toolbox with commands and expected outputs
-        self.investigation_tools = {
-            "1": {
-                "name": "GitHub Actions Workflow Analyzer",
-                "description": "Examine the broken CI configuration file",
-                "command": "cat customer-report/broken-repo/.github/workflows/test.yml",
-                "expected_output": """name: Test Suite
+        # Supporting documents for customer analysis
+        self.supporting_documents = [
+            {
+                "name": "GitHub Actions Workflow",
+                "file": "customer-report/broken-repo/.github/workflows/test.yml",
+                "preview": """name: Test Suite
 on: [push, pull_request]
 jobs:
   test:
@@ -113,160 +80,259 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
       - name: Run Tests
-        run: npm test""",
-                "analysis_tip": "Notice what's missing? No testcontainers-cloud-setup-action!",
+          run: npm test""",
+                "key_insight": "🚨 Missing testcontainers-cloud-setup-action! This explains the timeout."
+            },
+            {
+                "name": "Execution Logs",
+                "file": "customer-report/github-actions-logs.txt",
+                "preview": """[2025-01-09 10:15:23] Starting GitHub Actions workflow
+[2025-01-09 10:15:26] Attempting Testcontainers Cloud setup...
+[2025-01-09 10:17:30] ERROR: Testcontainers Cloud setup failed: Quota exceeded
+[2025-01-09 10:17:30] Workflow terminated due to timeout""",
+                "key_insight": "🎯 Key error: 'Quota exceeded' during TCC setup - smoking gun!"
+            },
+            {
+                "name": "Account Configuration",
+                "file": "customer-report/account-details.json",
+                "preview": """{
+  "org_id": "3294",
+  "plan_type": "trial_legacy",
+  "status": "active",
+  "billing_model": "separate_tcc_billing",
+  "quota_exceeded": true,
+  "free_tier_minutes": 50,
+  "current_month_usage": 52
+}""",
+                "key_insight": "📊 Legacy trial plan with quota exceeded (52/50 minutes used)"
+            },
+            {
+                "name": "Usage Dashboard",
+                "file": "customer-report/usage-dashboard-screenshot.txt",
+                "preview": """TCC Usage Dashboard
+===================
+Free Tier Limit: 50 minutes
+Current Usage: 52 minutes
+Status: QUOTA EXCEEDED
+Last Successful CI: 2025-01-08 14:22:00
+Quota Exhausted: 2025-01-09 00:00:00""",
+                "key_insight": "📈 Visual confirmation: Quota exceeded 48 hours ago"
+            }
+        ]
+
+        # Enhanced analysis quiz
+        self.analysis_quiz = {
+            "question": "Based on the ticket and supporting documents, what's your initial hypothesis?",
+            "options": {
+                "A": {
+                    "text": "Authentication/Token issue",
+                    "insight": "Good thinking! Token regeneration suggests auth problems, but customer already tried this.",
+                    "points": 3
+                },
+                "B": {
+                    "text": "Quota/Billing problem",
+                    "insight": "🎯 EXCELLENT! The logs show 'Quota exceeded' and account shows 52/50 minutes used. This is the root cause!",
+                    "points": 20
+                },
+                "C": {
+                    "text": "Network connectivity issue",
+                    "insight": "Reasonable thought, but customer already verified network connectivity.",
+                    "points": 2
+                },
+                "D": {
+                    "text": "Configuration error",
+                    "insight": "Partially correct! Missing TCC setup action is a secondary issue, but not the root cause.",
+                    "points": 8
+                },
+                "E": {
+                    "text": "Service outage",
+                    "insight": "Customer already checked - TCC service is operational.",
+                    "points": 1
+                }
+            }
+        }
+
+        # Enhanced investigation tools (10 total: 6 essential + 4 red herrings)
+        self.investigation_tools = {
+            # Essential tools (must complete all 6)
+            "1": {
+                "name": "GitHub Actions Workflow Analyzer",
+                "description": "Examine the broken CI configuration file",
+                "command": "cat customer-report/broken-repo/.github/workflows/test.yml",
+                "analysis_tip": "🔍 The workflow is missing the testcontainers-cloud-setup-action step! This explains the timeout during TCC setup.",
                 "clue": "workflow_missing_setup",
-                "points": 15,
-                "key": "workflow_missing_setup"
+                "points": 20,
+                "is_essential": True
             },
             "2": {
                 "name": "Failure Logs Analyzer",
                 "description": "Check GitHub Actions execution logs for specific errors",
                 "command": "cat customer-report/github-actions-logs.txt",
-                "expected_output": """[2025-01-09 10:15:23] Starting GitHub Actions workflow
-[2025-01-09 10:15:24] Checking out repository code
-[2025-01-09 10:15:25] Setting up Node.js environment
-[2025-01-09 10:15:26] Attempting Testcontainers Cloud setup...
-[2025-01-09 10:17:30] ERROR: Testcontainers Cloud setup failed: Quota exceeded
-[2025-01-09 10:17:30] Workflow terminated due to timeout""",
-                "analysis_tip": "The logs show 'Quota exceeded' error during TCC setup - this is the smoking gun!",
+                "analysis_tip": "🚨 SMOKING GUN! Logs show 'ERROR: Testcontainers Cloud setup failed: Quota exceeded'. This is the root cause!",
                 "clue": "logs_quota_exceeded",
-                "points": 20,
-                "key": "logs_quota_exceeded"
+                "points": 25,
+                "is_essential": True
             },
             "3": {
                 "name": "TCC Service Health Check",
                 "description": "Verify if the Testcontainers Cloud service is operational",
                 "command": "curl http://localhost:8080/v1/health",
-                "expected_output": """{
-  "status": "operational",
-  "timestamp": "2025-01-09T10:15:30Z",
-  "version": "1.0.0"
-}""",
-                "analysis_tip": "Service is operational - this rules out a TCC service outage.",
+                "analysis_tip": "✅ TCC service is operational - this rules out a service outage. The issue is elsewhere.",
                 "clue": "api_health_ok",
-                "points": 10,
-                "key": "api_health_ok"
+                "points": 15,
+                "is_essential": True
             },
             "4": {
                 "name": "Account Usage Inspector",
                 "description": "Investigate quota and usage patterns using the mock API",
                 "command": 'curl -H "Authorization: Bearer tcc-lab-token-12345" http://localhost:8080/v1/usage',
-                "expected_output": """{
-  "free_tier_minutes": 50,
-  "current_month_usage": 52,
-  "quota_exceeded": true,
-  "quota_reset": "never",
-  "last_successful_ci": "2025-01-08T14:22:00Z",
-  "quota_exhausted_date": "2025-01-09T00:00:00Z"
-}""",
-                "analysis_tip": "🚨 SMOKING GUN! Usage is 52/50 minutes - quota exceeded! This is the root cause!",
+                "analysis_tip": "🎯 CONFIRMED! Usage is 52/50 minutes - quota exceeded! This explains why CI fails but local works.",
                 "clue": "api_usage_exceeded",
                 "points": 30,
-                "key": "api_usage_exceeded"
+                "is_essential": True
             },
             "5": {
                 "name": "Account Details Inspector",
                 "description": "Examine customer's TCC account configuration",
                 "command": 'curl -H "Authorization: Bearer tcc-lab-token-12345" http://localhost:8080/v1/account',
-                "expected_output": """{
-  "org_id": "3294",
-  "plan_type": "trial_legacy",
-  "status": "active",
-  "billing_model": "separate_tcc_billing",
-  "docker_pro_plan": "legacy_subscription",
-  "tcc_included": false
-}""",
-                "analysis_tip": "Legacy trial plan with separate TCC billing - explains the limitations and quota restrictions.",
+                "analysis_tip": "🏢 Legacy trial plan with separate TCC billing - explains the quota limitations and billing confusion.",
                 "clue": "api_account_details",
-                "points": 15,
-                "key": "api_account_details"
+                "points": 20,
+                "is_essential": True
             },
             "6": {
                 "name": "Static Account Data Review",
                 "description": "Review the detailed account information file",
                 "command": "cat customer-report/account-details.json",
-                "expected_output": """{
-  "org_id": "3294",
-  "plan_type": "trial_legacy",
-  "status": "active",
-  "billing_model": "separate_tcc_billing",
-  "quota_exceeded": true,
-  "free_tier_minutes": 50,
-  "current_month_usage": 52,
-  "last_successful_ci": "2025-01-08T14:22:00Z",
-  "quota_exhausted_date": "2025-01-09T00:00:00Z"
-}""",
-                "analysis_tip": "This corroborates the API findings - quota exceeded 48 hours ago, matching the customer's timeline!",
+                "analysis_tip": "📊 This corroborates the API findings - quota exceeded 48 hours ago, matching the customer's timeline perfectly!",
                 "clue": "static_account_data",
-                "points": 10,
-                "key": "static_account_data"
+                "points": 15,
+                "is_essential": True
+            },
+            # Red herring tools (exploratory, no penalty)
+            "7": {
+                "name": "Network Connectivity Test",
+                "description": "Test network connectivity to TCC services",
+                "command": "curl -I https://api.testcontainers.cloud",
+                "analysis_tip": "📡 Network connectivity is fine, but this doesn't solve the quota issue. Customer already verified this.",
+                "clue": "network_connectivity_ok",
+                "points": 0,
+                "is_essential": False
+            },
+            "8": {
+                "name": "Docker Version Check",
+                "description": "Check Docker version and compatibility",
+                "command": "docker --version",
+                "analysis_tip": "🐳 Docker version is current, but this isn't related to TCC quota limits.",
+                "clue": "docker_version_ok",
+                "points": 0,
+                "is_essential": False
+            },
+            "9": {
+                "name": "GitHub Actions Runner Status",
+                "description": "Check GitHub Actions runner configuration",
+                "command": "echo 'GitHub Actions runners are operational'",
+                "analysis_tip": "🏃 GitHub Actions runners are working fine. The issue is with TCC quota, not runner status.",
+                "clue": "runner_status_ok",
+                "points": 0,
+                "is_essential": False
+            },
+            "10": {
+                "name": "Service Account Token Validation",
+                "description": "Validate the TCC service account token",
+                "command": 'curl -H "Authorization: Bearer tcc-lab-token-12345" http://localhost:8080/v1/account',
+                "analysis_tip": "🔑 Token is valid and working, but customer already regenerated it. The issue is quota, not authentication.",
+                "clue": "token_validation_ok",
+                "points": 0,
+                "is_essential": False
             }
         }
 
-        # Solution options
+        # Enhanced solutions with evidence requirements
         self.solutions = {
             "1": {
                 "title": "Upgrade TCC Plan",
                 "description": "Recommend upgrading to a Docker Business or Team plan for more TCC minutes",
                 "correct": True,
-                "points": 20
+                "points": 30,
+                "evidence_required": ["api_usage_exceeded", "api_account_details"],
+                "explanation": "Based on your investigation: quota exceeded (52/50 minutes) and legacy trial plan with no included TCC minutes. Upgrade provides immediate quota relief and includes TCC minutes in the plan."
             },
             "2": {
                 "title": "Optimize CI Usage",
                 "description": "Suggest optimizing CI workflows to reduce TCC minute consumption",
                 "correct": True,
-                "points": 15
+                "points": 25,
+                "evidence_required": ["api_usage_exceeded"],
+                "explanation": "Your usage data shows 52 minutes consumed this month. Optimizing workflows (container reuse, parallel testing, selective test runs) can reduce consumption and extend current quota."
             },
             "3": {
-                "title": "Fix GitHub Actions Workflow",
-                "description": "Add the missing testcontainers-cloud-setup-action to the workflow",
-                "correct": False,  # This is a secondary issue, not the root cause
-                "points": 5
-            },
-            "4": {
                 "title": "Switch to Local Testing",
                 "description": "Advise running tests locally as it doesn't consume TCC minutes",
                 "correct": True,
-                "points": 10
+                "points": 20,
+                "evidence_required": ["api_account_details"],
+                "explanation": "Your account investigation revealed local execution is unlimited (customer infrastructure). This provides immediate relief while planning long-term solutions like plan upgrades."
+            },
+            "4": {
+                "title": "Fix GitHub Actions Workflow",
+                "description": "Add the missing testcontainers-cloud-setup-action to the workflow",
+                "correct": True,
+                "points": 15,
+                "evidence_required": ["workflow_missing_setup"],
+                "explanation": "This addresses a secondary issue - the missing TCC setup action. However, even with this fix, the workflow will still fail due to quota exceeded. Fix both issues for complete resolution."
+            },
+            "5": {
+                "title": "Regenerate Service Account Token",
+                "description": "Generate a new TCC service account token",
+                "correct": False,
+                "points": 0,
+                "explanation": "Customer already tried this. Your logs analysis showed 'Quota exceeded' error, not authentication issues. Token regeneration won't solve quota problems - the token is working fine."
+            },
+            "6": {
+                "title": "Contact TCC Support",
+                "description": "Escalate to Testcontainers Cloud support team",
+                "correct": False,
+                "points": 0,
+                "explanation": "This is a billing/quota issue, not a technical support issue. Your health check confirmed TCC service is operational. Billing issues are handled by account management, not technical support."
             }
         }
 
     def start_investigation(self):
-        """Start the enhanced investigation experience"""
+        """Start the complete enhanced investigation experience"""
         self.clear_screen()
         self.print_banner()
         
-        # Phase 1: Customer Analysis
-        self.customer_analysis_phase()
+        # Phase 1: Enhanced Customer Analysis
+        self.enhanced_customer_analysis_phase()
         
         # Phase 2: Investigation Toolbox Preview
         self.investigation_preview_phase()
         
-        # Phase 3: Active Investigation
+        # Phase 3: Active Investigation with Real Commands
         self.active_investigation_phase()
         
-        # Phase 4: Solution Proposal
-        self.solution_phase()
+        # Phase 4: Enhanced Solution Proposal
+        self.enhanced_solution_phase()
 
     def print_banner(self):
         """Print the investigation banner"""
-        print("🕵️‍♂️ Welcome to The Quota Mystery - Enhanced TSE Investigation")
-        print("=" * 65)
+        print("🕵️‍♂️ Welcome to The Quota Mystery - Complete Enhanced TSE Investigation")
+        print("=" * 75)
         print()
         print("🎯 Mission: Solve a customer's TCC CI/CD failure")
         print("📊 Score: {}/{}".format(self.score, self.max_score))
-        print("🔍 Clues Found: {}/{}".format(len(self.clues_found), self.max_clues))
+        print("🔍 Essential Clues: {}/{}".format(len(self.clues_found), self.max_clues))
         print()
 
     def clear_screen(self):
         """Clear the terminal screen"""
         os.system('clear' if os.name == 'posix' else 'cls')
 
-    def customer_analysis_phase(self):
-        """Phase 1: Customer Analysis"""
-        print("📋 PHASE 1: CUSTOMER ANALYSIS")
-        print("=" * 35)
+    def enhanced_customer_analysis_phase(self):
+        """Phase 1: Enhanced Customer Analysis with Supporting Documents"""
+        print("📋 PHASE 1: ENHANCED CUSTOMER ANALYSIS")
+        print("=" * 45)
         print()
         
         # Show customer ticket
@@ -275,10 +341,56 @@ jobs:
         print(self.customer_ticket)
         print()
         
-        input("⏎ Press Enter to continue to analysis quiz...")
+        input("⏎ Press Enter to view supporting documents...")
         print()
         
-        # Customer analysis quiz
+        # Show supporting documents
+        self.show_supporting_documents()
+        
+        # Optional document exploration
+        self.allow_document_exploration()
+        
+        # Assessment quiz
+        self.take_assessment_quiz()
+
+    def show_supporting_documents(self):
+        """Show supporting documents with key insights"""
+        print("📁 SUPPORTING DOCUMENTS AVAILABLE:")
+        print("=" * 40)
+        
+        for i, doc in enumerate(self.supporting_documents, 1):
+            print(f"\n📄 {i}. {doc['name']}")
+            print(f"   📍 File: {doc['file']}")
+            print(f"   💡 Key Insight: {doc['key_insight']}")
+            print(f"   📋 Preview:")
+            for line in doc['preview'].split('\n')[:3]:
+                print(f"      {line}")
+            if len(doc['preview'].split('\n')) > 3:
+                remaining_lines = len(doc['preview'].split('\n')) - 3
+                print(f"      ... ({remaining_lines} more lines)")
+        
+        print()
+
+    def allow_document_exploration(self):
+        """Allow TSE to explore specific documents"""
+        while True:
+            explore = input("🔍 Would you like to explore any specific document? (1-4, or 'skip'): ").strip()
+            
+            if explore.lower() == 'skip':
+                break
+            elif explore.isdigit() and 1 <= int(explore) <= len(self.supporting_documents):
+                doc = self.supporting_documents[int(explore) - 1]
+                print(f"\n📄 {doc['name']} - Full Content:")
+                print("-" * 40)
+                print(doc['preview'])
+                print()
+                print(f"💡 Key Insight: {doc['key_insight']}")
+                print()
+            else:
+                print("❌ Please enter 1-4 or 'skip'")
+
+    def take_assessment_quiz(self):
+        """Take the enhanced assessment quiz"""
         print("🧠 INITIAL ASSESSMENT QUIZ:")
         print("-" * 30)
         print(self.analysis_quiz["question"])
@@ -314,45 +426,55 @@ jobs:
         print("🔧 PHASE 2: INVESTIGATION TOOLBOX")
         print("=" * 35)
         print()
-        print("Here are your diagnostic tools. Each shows exactly what command")
-        print("you'll run and what output to expect. Plan your investigation")
-        print("strategy, then start when ready!")
+        print("Here are your diagnostic tools. You'll run the actual commands")
+        print("and see real outputs. Plan your investigation strategy!")
         print()
         
-        for tool_id, tool in self.investigation_tools.items():
-            print(f"🔍 Tool {tool_id}: {tool['name']}")
-            print(f"   💡 What it reveals: {tool['description']}")
+        print("🎯 ESSENTIAL TOOLS (Complete All 6):")
+        print("-" * 35)
+        for tool_id in ["1", "2", "3", "4", "5", "6"]:
+            tool = self.investigation_tools[tool_id]
+            print(f"{tool_id}. 🔍 {tool['name']}")
+            print(f"   💭 {tool['description']}")
             print(f"   💻 Command: {tool['command']}")
-            print(f"   📄 Expected output: {tool['expected_output'][:100]}{'...' if len(tool['expected_output']) > 100 else ''}")
-            print(f"   🔍 Analysis tip: {tool['analysis_tip']}")
-            print(f"   🎯 When to use: {'Early investigation' if tool_id in ['1', '2'] else 'After initial findings' if tool_id in ['3', '4'] else 'Final confirmation'}")
+            print(f"   🎯 Points: {tool['points']}")
             print()
         
-        print("🎯 INVESTIGATION STRATEGY TIPS:")
-        print("-" * 35)
+        print("🎭 EXPLORATORY TOOLS (Optional, No Penalty):")
+        print("-" * 40)
+        for tool_id in ["7", "8", "9", "10"]:
+            tool = self.investigation_tools[tool_id]
+            print(f"{tool_id}. 🔍 {tool['name']}")
+            print(f"   💭 {tool['description']}")
+            print(f"   💻 Command: {tool['command']}")
+            print(f"   🎯 Points: 0 (exploratory)")
+            print()
+        
+        print("🎯 INVESTIGATION STRATEGY:")
+        print("-" * 25)
         print("• Start with tools 1-2 (workflow and logs) for initial context")
         print("• Use tool 3 (health check) to rule out service issues")
         print("• Tools 4-5 (usage/account) will reveal the root cause")
         print("• Tool 6 (static data) provides final confirmation")
+        print("• Tools 7-10 are exploratory - won't hurt your score")
         print()
         
         input("⏎ Press Enter to start active investigation...")
 
     def active_investigation_phase(self):
-        """Phase 3: Active Investigation"""
+        """Phase 3: Active Investigation with Real Command Execution"""
         self.clear_screen()
         print("🕵️‍♂️ PHASE 3: ACTIVE INVESTIGATION")
         print("=" * 35)
         print()
         print("Now it's time to investigate! Run the diagnostic tools in any")
-        print("order you prefer. You can always go back to review customer")
-        print("information or the toolbox.")
+        print("order you prefer. You can always go back to review information.")
         print()
         
-        while len(self.clues_found) < self.max_clues:
+        while len([c for c in self.clues_found if self.investigation_tools[c]['is_essential']]) < 6:
             self.show_investigation_menu()
             
-            choice = input(f"\n🎯 What would you like to investigate? (1-6, 'help', 'status', 'customer', 'toolbox', 'solve'): ").strip().lower()
+            choice = input(f"\n🎯 What would you like to investigate? (1-10, 'help', 'status', 'customer', 'toolbox', 'solve'): ").strip().lower()
             
             if choice == 'help':
                 self.show_help()
@@ -363,11 +485,11 @@ jobs:
             elif choice == 'toolbox':
                 self.show_toolbox()
             elif choice == 'solve':
-                if len(self.clues_found) >= 4:
+                if self.check_essential_completion():
                     return  # Move to solution phase
                 else:
-                    print("🔍 You need to find more clues before proposing a solution! (Need at least 4 clues)")
-            elif choice.isdigit() and 1 <= int(choice) <= 6:
+                    print("🔍 You need to complete all 6 essential tools before proposing solutions!")
+            elif choice.isdigit() and 1 <= int(choice) <= 10:
                 tool_id = choice
                 if tool_id not in self.clues_found:
                     self.execute_investigation_tool(tool_id)
@@ -383,18 +505,21 @@ jobs:
         print("\n🔍 INVESTIGATION TOOLS:")
         print("-" * 25)
         
+        essential_completed = len([c for c in self.clues_found if self.investigation_tools[c]['is_essential']])
+        
         for tool_id, tool in self.investigation_tools.items():
             status = "✅" if tool_id in self.clues_found else "🔍"
-            print(f"{tool_id}. {status} {tool['name']}")
+            essential_indicator = "🎯" if tool['is_essential'] else "🎭"
+            print(f"{tool_id}. {status} {essential_indicator} {tool['name']}")
             print(f"   💭 {tool['description']}")
         
-        print("\n📊 INVESTIGATION STATUS:")
+        print(f"\n📊 INVESTIGATION STATUS:")
         print(f"   Score: {self.score}/{self.max_score}")
-        print(f"   Clues: {len(self.clues_found)}/{self.max_clues}")
-        print(f"   Progress: {len(self.clues_found)/self.max_clues*100:.0f}%")
+        print(f"   Essential Tools: {essential_completed}/6")
+        print(f"   Progress: {essential_completed/6*100:.0f}%")
 
     def execute_investigation_tool(self, tool_id):
-        """Execute an investigation tool"""
+        """Execute an investigation tool with real command execution"""
         tool = self.investigation_tools[tool_id]
         
         print(f"\n🔍 {tool['name']}")
@@ -406,18 +531,27 @@ jobs:
         print(f"   {tool['command']}")
         print()
         
-        # Show expected output
-        print("📄 Expected output:")
-        print("-" * 20)
-        print(tool['expected_output'])
-        print()
+        # TSE runs the command first
+        run_it = input("🤔 Do you want to run this command? (y/n): ").strip().lower()
         
-        # Show analysis tip
-        print("🔍 Analysis tip:")
-        print(f"   {tool['analysis_tip']}")
-        print()
-        
-        # Add clue and score
+        if run_it == 'y':
+            print(f"\n⚡ Executing: {tool['command']}")
+            print("📋 Running command...")
+            print("-" * 30)
+            
+            # Actually execute the command
+            result = os.system(tool['command'])
+            print("-" * 30)
+            print("📋 Command completed!")
+            print()
+            
+            # Show analysis
+            self.show_analysis_and_clue(tool, tool_id)
+        else:
+            print("⏭️  Skipped this investigation step.")
+
+    def show_analysis_and_clue(self, tool, tool_id):
+        """Show analysis and clue after command execution"""
         self.clues_found.append(tool_id)
         self.score += tool['points']
         
@@ -435,25 +569,45 @@ jobs:
             print("   This explains why local works but CI fails.")
             print("   Local tests don't count against TCC quota!")
 
-    def solution_phase(self):
-        """Phase 4: Solution Proposal"""
+    def check_essential_completion(self):
+        """Check if all essential tools are completed"""
+        essential_completed = len([c for c in self.clues_found if self.investigation_tools[c]['is_essential']])
+        
+        if essential_completed == 6:
+            print("🎉 ALL ESSENTIAL TOOLS COMPLETED!")
+            print("✅ You've gathered all the critical evidence!")
+            print("🎯 Ready to propose solutions!")
+            return True
+        else:
+            remaining = 6 - essential_completed
+            print(f"🔍 Still need {remaining} essential tools to complete investigation")
+            return False
+
+    def enhanced_solution_phase(self):
+        """Phase 4: Enhanced Solution Proposal with Evidence-Based Evaluation"""
         self.clear_screen()
-        print("🎯 PHASE 4: SOLUTION PROPOSAL")
-        print("=" * 35)
+        print("🎯 PHASE 4: ENHANCED SOLUTION PROPOSAL")
+        print("=" * 45)
         print()
-        print("Based on your investigation, what solutions would you propose to the customer?")
-        print("You can select multiple solutions:")
+        print("Based on your investigation findings, propose solutions to the customer.")
+        print("Each solution will be evaluated based on:")
+        print("• Correctness of the solution")
+        print("• Evidence you've gathered")
+        print("• Alignment with root cause")
         print()
         
+        # Show solutions with evidence indicators
         for sol_id, solution in self.solutions.items():
-            print(f"{sol_id}. {solution['title']}")
+            evidence_status = "✅" if all(clue in self.clues_found for clue in solution.get("evidence_required", [])) else "⚠️"
+            print(f"{sol_id}. {evidence_status} {solution['title']}")
             print(f"   💭 {solution['description']}")
-        
-        print()
+            if solution.get("evidence_required"):
+                print(f"   🔍 Requires evidence: {', '.join(solution['evidence_required'])}")
+            print()
         
         chosen_solutions = []
         while True:
-            choice_input = input("🎯 Enter solution numbers (e.g., '1 2 4'), or 'done' to finish: ").strip()
+            choice_input = input("🎯 Enter solution numbers (e.g., '1 2 3'), or 'done' to finish: ").strip()
             if choice_input.lower() == 'done':
                 break
             try:
@@ -461,43 +615,79 @@ jobs:
                 for c in choices:
                     if c in self.solutions and c not in chosen_solutions:
                         chosen_solutions.append(c)
+                        self.evaluate_solution(c)
                     elif c not in self.solutions:
                         print(f"❌ Invalid solution number: {c}")
             except:
                 print("❌ Invalid input. Please enter numbers or 'done'.")
         
-        print()
-        print("🎯 EVALUATING YOUR SOLUTIONS:")
-        print("=" * 35)
+        # Final summary
+        self.show_solution_summary(chosen_solutions)
+
+    def evaluate_solution(self, solution_id):
+        """Evaluate a solution with detailed feedback"""
+        solution = self.solutions[solution_id]
         
-        solution_score = 0
-        for sol_id in chosen_solutions:
-            solution = self.solutions[sol_id]
-            if solution["correct"]:
-                solution_score += solution["points"]
-                print(f"✅ Excellent Solution: {solution['title']} (+{solution['points']} points)")
+        print(f"\n🎯 EVALUATING: {solution['title']}")
+        print("=" * 50)
+        
+        if solution["correct"]:
+            # Check if TSE has required evidence
+            has_evidence = all(clue in self.clues_found for clue in solution.get("evidence_required", []))
+            
+            if has_evidence:
+                print("✅ EXCELLENT SOLUTION!")
+                print("📊 Evidence-based reasoning:")
+                print(f"   {solution['explanation']}")
+                print(f"📈 Points earned: {solution['points']}")
+                
+                # Show specific evidence
+                print("\n🔍 Evidence from your investigation:")
+                for clue in solution.get("evidence_required", []):
+                    tool = next(t for t in self.investigation_tools.values() if t['clue'] == clue)
+                    print(f"   • {tool['name']}: {tool['analysis_tip']}")
             else:
-                print(f"⚠️  Partial Solution: {solution['title']} (+{solution['points']} points)")
-                print("   (This addresses a secondary issue, not the root cause)")
-                solution_score += solution["points"]
-        
-        self.score += solution_score
-        
-        print()
-        print("🎉 INVESTIGATION COMPLETE!")
-        print("=" * 25)
+                print("⚠️  GOOD SOLUTION, but missing evidence:")
+                print(f"   {solution['explanation']}")
+                print(f"📈 Points earned: {solution['points']} (reduced for missing evidence)")
+                print("\n🔍 Missing evidence:")
+                for clue in solution.get("evidence_required", []):
+                    if clue not in self.clues_found:
+                        tool = next(t for t in self.investigation_tools.values() if t['clue'] == clue)
+                        print(f"   • {tool['name']} - Run this tool to strengthen your solution")
+        else:
+            print("❌ INCORRECT SOLUTION")
+            print("📚 Why this won't work:")
+            print(f"   {solution['explanation']}")
+            print("📈 Points earned: 0")
+            print("\n💡 Better approach:")
+            print("   Focus on solutions that address the root cause: quota exhaustion")
+
+    def show_solution_summary(self, chosen_solutions):
+        """Show final solution summary"""
+        print("\n🎉 INVESTIGATION COMPLETE!")
+        print("=" * 30)
         print(f"📊 Final Score: {self.score}/{self.max_score}")
-        print(f"🔍 Clues Found: {len(self.clues_found)}/{self.max_clues}")
-        print()
-        print("💼 CUSTOMER COMMUNICATION:")
-        print("-" * 25)
-        print("Based on your investigation, you should communicate to the customer:")
-        print("• Root cause: TCC quota exceeded (52/50 minutes used)")
-        print("• Why local works: Local tests don't count against quota")
-        print("• Solutions: Upgrade plan, optimize usage, or use local testing")
+        
+        essential_completed = len([c for c in self.clues_found if self.investigation_tools[c]['is_essential']])
+        print(f"🔍 Essential Tools Used: {essential_completed}/6")
+        
+        correct_solutions = [s for s in chosen_solutions if self.solutions[s]["correct"]]
+        incorrect_solutions = [s for s in chosen_solutions if not self.solutions[s]["correct"]]
+        
+        print(f"✅ Correct Solutions: {len(correct_solutions)}")
+        print(f"❌ Incorrect Solutions: {len(incorrect_solutions)}")
+        
+        print("\n💼 CUSTOMER COMMUNICATION TEMPLATE:")
+        print("-" * 35)
+        print("Based on your investigation findings:")
+        print("• Root Cause: TCC quota exceeded (52/50 minutes used)")
+        print("• Evidence: Account usage data, execution logs, billing model")
+        print("• Recommended Solutions: Upgrade plan, optimize usage, local testing")
         print("• Timeline: Issue started when quota was exhausted 48 hours ago")
-        print()
-        print("🎯 Great detective work! You've successfully solved The Quota Mystery!")
+        print("• Local vs CI: Local tests don't count against quota")
+        
+        print("\n🎯 Excellent detective work! You've successfully solved The Quota Mystery!")
 
     def show_help(self):
         """Show help information"""
@@ -505,41 +695,56 @@ jobs:
         print("-" * 25)
         print("🎯 Goal: Find why CI fails but local works")
         print("🔍 Method: Use diagnostic tools to gather evidence")
-        print("📊 Scoring: Each tool gives points when discovered")
-        print("💡 Tips: Follow the evidence trail systematically")
+        print("📊 Scoring: Essential tools give points, exploratory tools don't")
+        print("💡 Tips: Complete all 6 essential tools for full investigation")
         print("🔄 Freedom: Go back to customer info or toolbox anytime")
 
     def show_status(self):
         """Show current investigation status"""
+        essential_completed = len([c for c in self.clues_found if self.investigation_tools[c]['is_essential']])
+        
         print(f"\n📊 INVESTIGATION STATUS:")
         print(f"   Score: {self.score}/{self.max_score}")
-        print(f"   Clues Found: {len(self.clues_found)}/{self.max_clues}")
+        print(f"   Essential Tools: {essential_completed}/6")
         print(f"   Root Cause: {'✅ Found' if '4' in self.clues_found else '🔍 Still investigating'}")
         
         if self.clues_found:
             print(f"\n🔍 Tools Used:")
-            for tool_id in self.clues_found:
-                tool = self.investigation_tools[tool_id]
-                print(f"   ✅ {tool['name']}")
+            for clue in self.clues_found:
+                tool = self.investigation_tools[clue]
+                essential_indicator = "🎯" if tool['is_essential'] else "🎭"
+                print(f"   ✅ {essential_indicator} {tool['name']}")
 
     def show_customer_info(self):
         """Show customer information"""
         print("\n📞 CUSTOMER INFORMATION:")
         print("-" * 25)
         print(self.customer_ticket)
+        print()
+        self.show_supporting_documents()
 
     def show_toolbox(self):
         """Show investigation toolbox"""
         print("\n🔧 INVESTIGATION TOOLBOX:")
         print("-" * 25)
-        for tool_id, tool in self.investigation_tools.items():
+        
+        print("🎯 ESSENTIAL TOOLS:")
+        for tool_id in ["1", "2", "3", "4", "5", "6"]:
+            tool = self.investigation_tools[tool_id]
+            status = "✅ Used" if tool_id in self.clues_found else "🔍 Available"
+            print(f"{tool_id}. {status} {tool['name']}")
+            print(f"   💻 {tool['command']}")
+        
+        print("\n🎭 EXPLORATORY TOOLS:")
+        for tool_id in ["7", "8", "9", "10"]:
+            tool = self.investigation_tools[tool_id]
             status = "✅ Used" if tool_id in self.clues_found else "🔍 Available"
             print(f"{tool_id}. {status} {tool['name']}")
             print(f"   💻 {tool['command']}")
 
 def main():
-    """Main function to start the enhanced investigation"""
-    engine = EnhancedInvestigationEngine()
+    """Main function to start the complete enhanced investigation"""
+    engine = CompleteEnhancedInvestigationEngine()
     engine.start_investigation()
 
 if __name__ == "__main__":
