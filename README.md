@@ -11,22 +11,23 @@ docker run -it ashimeashime006/tcc-lab:latest
 # The mystery investigation game starts automatically!
 ```
 
-**🎮 Enhanced Interactive Experience:**
-- **📋 Customer Analysis Phase** - Read ticket, take assessment quiz, form hypothesis
-- **🔧 Investigation Toolbox** - See commands + expected outputs + analysis tips
-- **🕵️‍♂️ Active Investigation** - Run diagnostic tools with confidence
-- **🎯 Solution Proposal** - Apply findings, draft customer response
+**🎮 Complete Enhanced Interactive Experience:**
+- **📋 Customer Analysis Phase** - Read ticket, explore supporting documents, take assessment quiz
+- **🔧 Investigation Toolbox** - 10 diagnostic tools (6 essential + 4 red herrings) with command previews
+- **🕵️‍♂️ Active Investigation** - Run real commands, discover clues progressively, strategic decision making
+- **🎯 Solution Evaluation** - Evidence-based solution validation with detailed feedback and explanations
 
 **No Setup Required!** TCC account, service tokens, and Testcontainers Desktop are pre-configured.
 
 ## Exercise
 
-### The Quota Mystery (45-60 minutes)
+### The Quota Mystery (60-90 minutes)
 - **Scenario**: Customer hitting TCC quota limits in GitHub Actions
 - **Focus**: Billing models, usage tracking, and quota analysis
-- **Skills**: Customer investigation and quota management
-- **Type**: Enhanced interactive TSE training simulation
-- **Experience**: Complete investigation workflow from ticket analysis to solution proposal
+- **Skills**: Customer investigation, strategic thinking, evidence analysis, professional communication
+- **Type**: Complete enhanced interactive TSE training simulation
+- **Experience**: Realistic workflow from customer ticket analysis to evidence-based solution proposal
+- **Features**: Real command execution, red herring tools, evidence-based solution evaluation
 
 ## Prerequisites
 
@@ -60,9 +61,14 @@ labspace-exercises/
 
 ## Learning Approach
 
-**Real TSE Experience:**
-- Pre-configured broken scenario ready to investigate
-- Systematic investigation methodology
-- Professional customer communication templates
-- Complete working solutions
-- Based on actual TSE support tickets
+**Complete Enhanced TSE Training Simulation:**
+- **Realistic customer scenarios** with complete ticket analysis
+- **Strategic investigation methodology** with 10 diagnostic tools
+- **Real command execution** for authentic TSE skill building
+- **Evidence-based solution evaluation** with detailed feedback
+- **Professional communication guidance** with response templates
+- **Red herring tools** for critical thinking development
+- **Progressive clue discovery** with educational insights
+- **Based on actual TSE support tickets** with real diagnostic commands
+
+**Perfect for Senior TSE skill development with complete educational depth!**
