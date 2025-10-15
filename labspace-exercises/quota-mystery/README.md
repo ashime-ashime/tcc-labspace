@@ -1,4 +1,29 @@
-# Exercise 1: The Quota Mystery
+# 🎮 The Quota Mystery - Interactive TSE Investigation Game
+
+## 🕵️‍♂️ Mission Brief
+
+**You are a TSE detective** assigned to solve a critical customer issue. Your mission: investigate why a customer's CI/CD pipeline is failing and propose a solution.
+
+**🎯 Game Features:**
+- **Interactive investigation paths** - Choose your own adventure
+- **Progressive clue discovery** - Unlock insights as you investigate  
+- **Educational insights** - Learn with each finding
+- **Scoring system** - Earn points for good detective work
+- **Real diagnostic commands** - Practice actual TSE skills
+
+## 🚀 Quick Start - Interactive Mode
+
+```bash
+# Start the investigation game
+./start-investigation.sh
+
+# Or run the engine directly
+python3 .investigation-engine.py
+```
+
+## 📋 Traditional Investigation Mode
+
+If you prefer the traditional step-by-step approach:
 
 ## 🚨 Customer Issue Report
 
