@@ -539,13 +539,19 @@ Quota Exhausted: 2025-01-09 00:00:00""",
             input("\n⏎ Press Enter to continue...")
 
     def show_investigation_menu(self):
-        """Show the investigation menu"""
-        print("\n🔍 INVESTIGATION TOOLS:")
-        print("-" * 25)
+        """Show the investigation menu with randomized tool order"""
+        print("\n🔍 INVESTIGATION TOOLS (Order Randomized):")
+        print("-" * 40)
         
         essential_completed = len([c for c in self.clues_found if self.investigation_tools[c]['is_essential']])
         
-        for tool_id, tool in self.investigation_tools.items():
+        # Randomize the tool order for each menu display
+        import random
+        tool_ids = list(self.investigation_tools.keys())
+        random.shuffle(tool_ids)
+        
+        for tool_id in tool_ids:
+            tool = self.investigation_tools[tool_id]
             status = "✅" if tool_id in self.clues_found else "🔍"
             essential_indicator = "🎯" if tool['is_essential'] else "🎭"
             print(f"{tool_id}. {status} {essential_indicator} {tool['name']}")
