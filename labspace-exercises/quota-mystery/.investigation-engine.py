@@ -16,6 +16,8 @@ class CompleteEnhancedInvestigationEngine:
         self.max_score = 200
         self.max_clues = 6  # Essential clues only
         self.game_state = 'customer_analysis'
+        self.quiz_attempts = 0
+        self.max_quiz_attempts = 2
         
         # Customer scenario data
         self.customer_scenario = {
@@ -65,7 +67,7 @@ What We've Tried:
 - Restarted GitHub Actions runners (no effect)
 """
 
-        # Supporting documents for customer analysis
+        # Supporting documents for customer analysis (without spoiler insights)
         self.supporting_documents = [
             {
                 "name": "GitHub Actions Workflow",
@@ -81,7 +83,7 @@ jobs:
         uses: actions/setup-node@v3
       - name: Run Tests
           run: npm test""",
-                "key_insight": "🚨 Missing testcontainers-cloud-setup-action! This explains the timeout."
+                "key_insight": "Workflow configuration for CI/CD pipeline"
             },
             {
                 "name": "Execution Logs",
@@ -90,7 +92,7 @@ jobs:
 [2025-01-09 10:15:26] Attempting Testcontainers Cloud setup...
 [2025-01-09 10:17:30] ERROR: Testcontainers Cloud setup failed: Quota exceeded
 [2025-01-09 10:17:30] Workflow terminated due to timeout""",
-                "key_insight": "🎯 Key error: 'Quota exceeded' during TCC setup - smoking gun!"
+                "key_insight": "GitHub Actions execution timeline and error messages"
             },
             {
                 "name": "Account Configuration",
@@ -104,7 +106,7 @@ jobs:
   "free_tier_minutes": 50,
   "current_month_usage": 52
 }""",
-                "key_insight": "📊 Legacy trial plan with quota exceeded (52/50 minutes used)"
+                "key_insight": "Customer account details and billing configuration"
             },
             {
                 "name": "Usage Dashboard",
@@ -116,7 +118,7 @@ Current Usage: 52 minutes
 Status: QUOTA EXCEEDED
 Last Successful CI: 2025-01-08 14:22:00
 Quota Exhausted: 2025-01-09 00:00:00""",
-                "key_insight": "📈 Visual confirmation: Quota exceeded 48 hours ago"
+                "key_insight": "Usage statistics and quota information"
             }
         ]
 
@@ -390,7 +392,7 @@ Quota Exhausted: 2025-01-09 00:00:00""",
                 print("❌ Please enter 1-4 or 'skip'")
 
     def take_assessment_quiz(self):
-        """Take the enhanced assessment quiz"""
+        """Take the enhanced assessment quiz with multiple attempts"""
         print("🧠 INITIAL ASSESSMENT QUIZ:")
         print("-" * 30)
         print(self.analysis_quiz["question"])
@@ -401,8 +403,17 @@ Quota Exhausted: 2025-01-09 00:00:00""",
         
         print()
         
-        while True:
-            choice = input("🎯 Enter your hypothesis (A-E): ").strip().upper()
+        while self.quiz_attempts < self.max_quiz_attempts:
+            self.quiz_attempts += 1
+            remaining = self.max_quiz_attempts - self.quiz_attempts
+            
+            if remaining > 0:
+                print(f"🎯 Attempt {self.quiz_attempts} of {self.max_quiz_attempts} (remaining: {remaining})")
+            else:
+                print(f"🎯 Final attempt ({self.quiz_attempts} of {self.max_quiz_attempts})")
+            
+            choice = input("Enter your hypothesis (A-E): ").strip().upper()
+            
             if choice in self.analysis_quiz["options"]:
                 selected = self.analysis_quiz["options"][choice]
                 self.score += selected["points"]
@@ -416,12 +427,16 @@ Quota Exhausted: 2025-01-09 00:00:00""",
                 break
             else:
                 print("❌ Please enter A, B, C, D, or E")
+                if remaining > 0:
+                    print(f"🔄 You have {remaining} attempts remaining.")
+                else:
+                    print("🎯 This was your final attempt.")
         
         print()
         input("⏎ Press Enter to continue to Investigation Toolbox...")
 
     def investigation_preview_phase(self):
-        """Phase 2: Investigation Toolbox Preview"""
+        """Phase 2: Investigation Toolbox Preview with Randomized Order"""
         self.clear_screen()
         print("🔧 PHASE 2: INVESTIGATION TOOLBOX")
         print("=" * 35)
@@ -430,21 +445,30 @@ Quota Exhausted: 2025-01-09 00:00:00""",
         print("and see real outputs. Plan your investigation strategy!")
         print()
         
-        print("🎯 ESSENTIAL TOOLS (Complete All 6):")
-        print("-" * 35)
-        for tool_id in ["1", "2", "3", "4", "5", "6"]:
+        # Randomize tool order for more realistic investigation
+        import random
+        essential_tools = ["1", "2", "3", "4", "5", "6"]
+        exploratory_tools = ["7", "8", "9", "10"]
+        
+        # Shuffle the order to confuse TSEs a little
+        random.shuffle(essential_tools)
+        random.shuffle(exploratory_tools)
+        
+        print("🎯 ESSENTIAL TOOLS (Complete All 6 - Order Randomized):")
+        print("-" * 55)
+        for i, tool_id in enumerate(essential_tools, 1):
             tool = self.investigation_tools[tool_id]
-            print(f"{tool_id}. 🔍 {tool['name']}")
+            print(f"{i}. 🔍 {tool['name']}")
             print(f"   💭 {tool['description']}")
             print(f"   💻 Command: {tool['command']}")
             print(f"   🎯 Points: {tool['points']}")
             print()
         
-        print("🎭 EXPLORATORY TOOLS (Optional, No Penalty):")
-        print("-" * 40)
-        for tool_id in ["7", "8", "9", "10"]:
+        print("🎭 EXPLORATORY TOOLS (Optional, No Penalty - Order Randomized):")
+        print("-" * 60)
+        for i, tool_id in enumerate(exploratory_tools, 7):
             tool = self.investigation_tools[tool_id]
-            print(f"{tool_id}. 🔍 {tool['name']}")
+            print(f"{i}. 🔍 {tool['name']}")
             print(f"   💭 {tool['description']}")
             print(f"   💻 Command: {tool['command']}")
             print(f"   🎯 Points: 0 (exploratory)")
@@ -452,11 +476,11 @@ Quota Exhausted: 2025-01-09 00:00:00""",
         
         print("🎯 INVESTIGATION STRATEGY:")
         print("-" * 25)
-        print("• Start with tools 1-2 (workflow and logs) for initial context")
-        print("• Use tool 3 (health check) to rule out service issues")
-        print("• Tools 4-5 (usage/account) will reveal the root cause")
-        print("• Tool 6 (static data) provides final confirmation")
-        print("• Tools 7-10 are exploratory - won't hurt your score")
+        print("• Essential tools will reveal the root cause - complete all 6")
+        print("• Exploratory tools are optional - won't hurt your score")
+        print("• Run tools in any order you prefer")
+        print("• Focus on gathering evidence systematically")
+        print("• Use 'customer' command to re-read ticket anytime")
         print()
         
         input("⏎ Press Enter to start active investigation...")
@@ -590,20 +614,37 @@ Quota Exhausted: 2025-01-09 00:00:00""",
         print("=" * 45)
         print()
         print("Based on your investigation findings, propose solutions to the customer.")
-        print("Each solution will be evaluated based on:")
+        print()
+        print("🎯 SOLUTION GUIDANCE:")
+        print("• Choose solutions that address the ROOT CAUSE")
+        print("• Select multiple solutions for comprehensive approach")
+        print("• Focus on solutions with strong evidence support")
+        print("• Consider both immediate and long-term fixes")
+        print()
+        print("📊 EVALUATION CRITERIA:")
         print("• Correctness of the solution")
         print("• Evidence you've gathered")
         print("• Alignment with root cause")
+        print("• Professional customer communication")
         print()
         
-        # Show solutions with evidence indicators
+        # Show solutions with evidence indicators and guidance
+        print("🎯 AVAILABLE SOLUTIONS:")
+        print("-" * 25)
         for sol_id, solution in self.solutions.items():
             evidence_status = "✅" if all(clue in self.clues_found for clue in solution.get("evidence_required", [])) else "⚠️"
+            evidence_count = len([c for c in solution.get("evidence_required", []) if c in self.clues_found])
+            evidence_total = len(solution.get("evidence_required", []))
+            
             print(f"{sol_id}. {evidence_status} {solution['title']}")
             print(f"   💭 {solution['description']}")
             if solution.get("evidence_required"):
-                print(f"   🔍 Requires evidence: {', '.join(solution['evidence_required'])}")
+                print(f"   🔍 Evidence: {evidence_count}/{evidence_total} gathered")
             print()
+        
+        print("💡 TIP: Choose solutions 1, 2, and 3 for maximum points!")
+        print("   These address the root cause with strong evidence.")
+        print()
         
         chosen_solutions = []
         while True:
@@ -664,7 +705,7 @@ Quota Exhausted: 2025-01-09 00:00:00""",
             print("   Focus on solutions that address the root cause: quota exhaustion")
 
     def show_solution_summary(self, chosen_solutions):
-        """Show final solution summary"""
+        """Show comprehensive final solution summary with detailed feedback"""
         print("\n🎉 INVESTIGATION COMPLETE!")
         print("=" * 30)
         print(f"📊 Final Score: {self.score}/{self.max_score}")
@@ -678,16 +719,45 @@ Quota Exhausted: 2025-01-09 00:00:00""",
         print(f"✅ Correct Solutions: {len(correct_solutions)}")
         print(f"❌ Incorrect Solutions: {len(incorrect_solutions)}")
         
-        print("\n💼 CUSTOMER COMMUNICATION TEMPLATE:")
-        print("-" * 35)
+        # Comprehensive feedback
+        print("\n📋 COMPREHENSIVE FEEDBACK:")
+        print("-" * 30)
+        
+        if len(correct_solutions) >= 3:
+            print("🎯 EXCELLENT! You chose the optimal solutions!")
+            print("   You addressed the root cause comprehensively.")
+        elif len(correct_solutions) >= 2:
+            print("✅ GOOD! You identified key solutions.")
+            print("   Consider adding more solutions for comprehensive coverage.")
+        elif len(correct_solutions) >= 1:
+            print("⚠️  PARTIAL! You found some correct solutions.")
+            print("   Review the root cause to identify additional solutions.")
+        else:
+            print("❌ NEEDS IMPROVEMENT! No correct solutions chosen.")
+            print("   Focus on solutions that address quota exhaustion.")
+        
+        if incorrect_solutions:
+            print(f"\n🔍 INCORRECT SOLUTIONS ANALYSIS:")
+            for sol_id in incorrect_solutions:
+                solution = self.solutions[sol_id]
+                print(f"   • {solution['title']}: {solution['explanation']}")
+        
+        # Professional customer response
+        print("\n💼 PROFESSIONAL CUSTOMER RESPONSE:")
+        print("-" * 40)
         print("Based on your investigation findings:")
         print("• Root Cause: TCC quota exceeded (52/50 minutes used)")
         print("• Evidence: Account usage data, execution logs, billing model")
-        print("• Recommended Solutions: Upgrade plan, optimize usage, local testing")
         print("• Timeline: Issue started when quota was exhausted 48 hours ago")
         print("• Local vs CI: Local tests don't count against quota")
+        print()
+        print("Recommended Solutions:")
+        for sol_id in correct_solutions:
+            solution = self.solutions[sol_id]
+            print(f"• {solution['title']}: {solution['description']}")
         
-        print("\n🎯 Excellent detective work! You've successfully solved The Quota Mystery!")
+        print("\n🎯 Congratulations! You've successfully solved The Quota Mystery!")
+        print("   This experience has built your TSE investigation skills!")
 
     def show_help(self):
         """Show help information"""
