@@ -396,14 +396,24 @@ Quota Exhausted: 2025-01-09 00:00:00""",
                 print("❌ Please enter 1-4 or 'skip'")
 
     def take_assessment_quiz(self):
-        """Take the enhanced assessment quiz with multiple attempts"""
-        print("🧠 INITIAL ASSESSMENT QUIZ:")
-        print("-" * 30)
+        """Take the enhanced assessment quiz with randomized options and multiple attempts"""
+        print("🧠 ASSESSMENT QUIZ:")
+        print("-" * 25)
         print(self.analysis_quiz["question"])
         print()
         
-        for option, data in self.analysis_quiz["options"].items():
-            print(f"{option}. {data['text']}")
+        # Randomize the quiz options to mix correct and incorrect answers
+        import random
+        options_list = list(self.analysis_quiz["options"].items())
+        random.shuffle(options_list)
+        
+        # Create randomized option mapping
+        randomized_options = {}
+        option_letters = ['A', 'B', 'C', 'D', 'E']
+        
+        for i, (original_key, data) in enumerate(options_list):
+            randomized_options[option_letters[i]] = data
+            print(f"{option_letters[i]}. {data['text']}")
         
         print()
         
@@ -418,8 +428,8 @@ Quota Exhausted: 2025-01-09 00:00:00""",
             
             choice = input("Enter your hypothesis (A-E): ").strip().upper()
             
-            if choice in self.analysis_quiz["options"]:
-                selected = self.analysis_quiz["options"][choice]
+            if choice in randomized_options:
+                selected = randomized_options[choice]
                 self.score += selected["points"]
                 
                 print()
@@ -437,7 +447,7 @@ Quota Exhausted: 2025-01-09 00:00:00""",
                     print("🎯 This was your final attempt.")
         
         print()
-        input("⏎ Press Enter to continue to Investigation Toolbox...")
+        input("⏎ Press Enter to proceed to Solution Proposal...")
 
     def investigation_preview_phase(self):
         """Phase 2: Investigation Toolbox Preview with Randomized Order"""
