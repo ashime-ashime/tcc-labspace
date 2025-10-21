@@ -512,7 +512,7 @@ Quota Exhausted: 2025-01-09 00:00:00""",
         while len([c for c in self.clues_found if self.investigation_tools[c]['is_essential']]) < 6:
             self.show_investigation_menu()
             
-            choice = input(f"\n🎯 What would you like to investigate? (1-10, 'help', 'status', 'customer', 'toolbox', 'solve'): ").strip().lower()
+            choice = input(f"\n🎯 What would you like to investigate? (1-10, 'help', 'status', 'customer', 'toolbox', 'evidence', 'solve', 'exit'): ").strip().lower()
             
             if choice == 'help':
                 self.show_help()
@@ -522,11 +522,14 @@ Quota Exhausted: 2025-01-09 00:00:00""",
                 self.show_customer_info()
             elif choice == 'toolbox':
                 self.show_toolbox()
+            elif choice == 'evidence':
+                self.show_evidence_summary()
             elif choice == 'solve':
-                if self.check_essential_completion():
+                if self.allow_early_solve():
                     return  # Move to solution phase
-                else:
-                    print("🔍 You need to complete all 6 essential tools before proposing solutions!")
+            elif choice == 'exit':
+                if self.confirm_exit():
+                    return
             elif choice.isdigit() and 1 <= int(choice) <= 10:
                 tool_id = choice
                 if tool_id not in self.clues_found:
@@ -627,8 +630,107 @@ Quota Exhausted: 2025-01-09 00:00:00""",
             print(f"🔍 Still need {remaining} essential tools to complete investigation")
             return False
 
+    def allow_early_solve(self):
+        """Allow early solving with warnings and confirmation"""
+        essential_completed = len([c for c in self.clues_found if self.investigation_tools[c]['is_essential']])
+        
+        if essential_completed == 6:
+            print("✅ You've completed all essential tools!")
+            return True
+        elif essential_completed >= 3:
+            # Allow early solving with warning
+            print()
+            print("⚠️  EARLY SOLVE WARNING:")
+            print(f"   You've only gathered {essential_completed}/6 essential evidence items.")
+            print("   You may miss important insights!")
+            print()
+            print(f"   📊 Current score: {self.score}/{self.max_score}")
+            print(f"   🎯 Potential bonus: {(6-essential_completed)*15} points available from remaining tools")
+            print()
+            confirm = input("🤔 Are you confident you've found the root cause? (yes/no): ").strip().lower()
+            
+            if confirm in ['yes', 'y']:
+                print()
+                print("✅ Proceeding to solution phase with current evidence...")
+                print("💡 Your solution evaluation will reference the evidence you gathered.")
+                return True
+            else:
+                print()
+                print("✅ Good call! Continue gathering evidence for a stronger case.")
+                return False
+        else:
+            # Need minimum 3 essential tools
+            print()
+            print(f"🔍 Minimum evidence required: You need at least 3 essential tools.")
+            print(f"   Current progress: {essential_completed}/3 minimum (6 recommended)")
+            print("   Continue investigating to gather more evidence!")
+            return False
+
+    def show_evidence_summary(self):
+        """Show summary of all evidence gathered so far"""
+        print()
+        print("📋 EVIDENCE SUMMARY:")
+        print("=" * 50)
+        
+        if not self.clues_found:
+            print("❌ No evidence gathered yet. Start investigating!")
+            return
+        
+        essential_evidence = [c for c in self.clues_found if self.investigation_tools[c]['is_essential']]
+        exploratory_evidence = [c for c in self.clues_found if not self.investigation_tools[c]['is_essential']]
+        
+        print(f"\n🎯 ESSENTIAL EVIDENCE ({len(essential_evidence)}/6):")
+        print("-" * 50)
+        for clue_id in essential_evidence:
+            tool = self.investigation_tools[clue_id]
+            print(f"\n✅ {tool['name']}")
+            print(f"   💡 Key Finding: {tool['analysis_tip']}")
+        
+        if exploratory_evidence:
+            print(f"\n🎭 EXPLORATORY EVIDENCE ({len(exploratory_evidence)}/4):")
+            print("-" * 50)
+            for clue_id in exploratory_evidence:
+                tool = self.investigation_tools[clue_id]
+                print(f"\n✅ {tool['name']}")
+                print(f"   💡 Finding: {tool['analysis_tip']}")
+        
+        print(f"\n📊 EVIDENCE ANALYSIS:")
+        print(f"   Total Evidence Items: {len(self.clues_found)}/10")
+        print(f"   Essential Tools Completed: {len(essential_evidence)}/6")
+        print(f"   Current Score: {self.score}/{self.max_score}")
+        
+        if len(essential_evidence) >= 3:
+            print(f"   ✅ Sufficient evidence to propose solution (minimum 3/6 reached)")
+        else:
+            print(f"   ⚠️  Need {3-len(essential_evidence)} more essential tools to propose solution")
+        
+        print()
+
+    def confirm_exit(self):
+        """Confirm exit and handle cleanup"""
+        print()
+        print("🚪 EXIT CONFIRMATION:")
+        print("-" * 25)
+        print("Are you sure you want to exit the lab?")
+        print("⚠️  Progress will not be saved.")
+        print()
+        
+        confirm = input("Exit lab? (yes/no): ").strip().lower()
+        
+        if confirm in ['yes', 'y']:
+            print()
+            print("👋 Thank you for using the TCC Lab!")
+            print("   Feel free to run the lab again anytime.")
+            print()
+            import sys
+            sys.exit(0)
+        else:
+            print()
+            print("✅ Continuing investigation...")
+            return False
+
     def assessment_quiz_phase(self):
-        """Phase 4: Assessment Quiz (AFTER investigation)"""
+        """Phase 4: Assessment Quiz (AFTER investigation) with exit option"""
         self.clear_screen()
         self.print_banner()
         print("🧠 PHASE 4: ASSESSMENT QUIZ")
@@ -637,12 +739,16 @@ Quota Exhausted: 2025-01-09 00:00:00""",
         print("Now that you've gathered evidence through investigation,")
         print("let's test your understanding of the root cause!")
         print()
+        print("💡 Type 'evidence' to review your findings, or 'exit' to leave the lab")
+        print()
         
         # Take assessment quiz
         self.take_assessment_quiz()
         
         print()
-        input("⏎ Press Enter to proceed to Solution Proposal...")
+        choice = input("⏎ Press Enter to proceed to Solution Proposal (or 'exit' to leave): ").strip().lower()
+        if choice == 'exit':
+            self.confirm_exit()
 
     def enhanced_solution_phase(self):
         """Phase 5: Enhanced Solution Proposal with Evidence-Based Evaluation"""
@@ -651,6 +757,8 @@ Quota Exhausted: 2025-01-09 00:00:00""",
         print("=" * 45)
         print()
         print("Based on your investigation findings, propose solutions to the customer.")
+        print()
+        print("💡 Type 'evidence' to review your findings before proposing solutions")
         print()
         print("🎯 SOLUTION GUIDANCE:")
         print("• Choose solutions that address the ROOT CAUSE")
@@ -685,9 +793,18 @@ Quota Exhausted: 2025-01-09 00:00:00""",
         
         chosen_solutions = []
         while True:
-            choice_input = input("🎯 Enter solution numbers (e.g., '1 2 3'), or 'done' to finish: ").strip()
-            if choice_input.lower() == 'done':
+            choice_input = input("🎯 Enter solution numbers (e.g., '1 2 3'), 'evidence' to review, 'exit' to leave, or 'done' to finish: ").strip().lower()
+            
+            if choice_input == 'done':
                 break
+            elif choice_input == 'evidence':
+                self.show_evidence_summary()
+                continue
+            elif choice_input == 'exit':
+                if self.confirm_exit():
+                    return
+                continue
+            
             try:
                 choices = [c.strip() for c in choice_input.split()]
                 for c in choices:
@@ -697,13 +814,13 @@ Quota Exhausted: 2025-01-09 00:00:00""",
                     elif c not in self.solutions:
                         print(f"❌ Invalid solution number: {c}")
             except:
-                print("❌ Invalid input. Please enter numbers or 'done'.")
+                print("❌ Invalid input. Please enter numbers, 'evidence', 'exit', or 'done'.")
         
         # Final summary
         self.show_solution_summary(chosen_solutions)
 
     def evaluate_solution(self, solution_id):
-        """Evaluate a solution with detailed feedback"""
+        """Evaluate a solution with detailed feedback referencing gathered evidence"""
         solution = self.solutions[solution_id]
         
         print(f"\n🎯 EVALUATING: {solution['title']}")
@@ -711,35 +828,55 @@ Quota Exhausted: 2025-01-09 00:00:00""",
         
         if solution["correct"]:
             # Check if TSE has required evidence
-            has_evidence = all(clue in self.clues_found for clue in solution.get("evidence_required", []))
+            required_evidence = solution.get("evidence_required", [])
+            gathered_required = [clue for clue in required_evidence if clue in self.clues_found]
+            has_all_evidence = len(gathered_required) == len(required_evidence)
             
-            if has_evidence:
+            if has_all_evidence:
+                self.score += solution['points']
                 print("✅ EXCELLENT SOLUTION!")
                 print("📊 Evidence-based reasoning:")
                 print(f"   {solution['explanation']}")
                 print(f"📈 Points earned: {solution['points']}")
                 
-                # Show specific evidence
-                print("\n🔍 Evidence from your investigation:")
-                for clue in solution.get("evidence_required", []):
-                    tool = next(t for t in self.investigation_tools.values() if t['clue'] == clue)
-                    print(f"   • {tool['name']}: {tool['analysis_tip']}")
+                # Show specific evidence gathered
+                if gathered_required:
+                    print("\n🔍 Evidence from your investigation:")
+                    for clue_id in gathered_required:
+                        tool = self.investigation_tools[clue_id]
+                        print(f"   ✅ Tool {clue_id}: {tool['name']}")
+                        print(f"      Finding: {tool['analysis_tip']}")
             else:
-                print("⚠️  GOOD SOLUTION, but missing evidence:")
+                # Partial points for correct solution but missing evidence
+                partial_points = solution['points'] // 2
+                self.score += partial_points
+                print("⚠️  GOOD SOLUTION, but missing some evidence:")
                 print(f"   {solution['explanation']}")
-                print(f"📈 Points earned: {solution['points']} (reduced for missing evidence)")
-                print("\n🔍 Missing evidence:")
-                for clue in solution.get("evidence_required", []):
-                    if clue not in self.clues_found:
-                        tool = next(t for t in self.investigation_tools.values() if t['clue'] == clue)
-                        print(f"   • {tool['name']} - Run this tool to strengthen your solution")
+                print(f"📈 Points earned: {partial_points} (reduced for incomplete evidence)")
+                
+                if gathered_required:
+                    print("\n✅ Evidence you gathered:")
+                    for clue_id in gathered_required:
+                        tool = self.investigation_tools[clue_id]
+                        print(f"   • Tool {clue_id}: {tool['name']}")
+                
+                missing = [clue for clue in required_evidence if clue not in self.clues_found]
+                if missing:
+                    print("\n⚠️  Missing evidence (would strengthen your case):")
+                    for clue_id in missing:
+                        tool = self.investigation_tools[clue_id]
+                        print(f"   • Tool {clue_id}: {tool['name']}")
         else:
             print("❌ INCORRECT SOLUTION")
             print("📚 Why this won't work:")
             print(f"   {solution['explanation']}")
             print("📈 Points earned: 0")
-            print("\n💡 Better approach:")
-            print("   Focus on solutions that address the root cause: quota exhaustion")
+            
+            # Show what evidence they actually gathered
+            if self.clues_found:
+                print("\n💡 Review your evidence:")
+                print("   Type 'evidence' to see what you discovered")
+                print("   Focus on solutions that match your findings")
 
     def show_solution_summary(self, chosen_solutions):
         """Show comprehensive final solution summary with detailed feedback"""
@@ -799,12 +936,29 @@ Quota Exhausted: 2025-01-09 00:00:00""",
     def show_help(self):
         """Show help information"""
         print("\n📚 INVESTIGATION HELP:")
-        print("-" * 25)
+        print("-" * 40)
         print("🎯 Goal: Find why CI fails but local works")
         print("🔍 Method: Use diagnostic tools to gather evidence")
-        print("📊 Scoring: Essential tools give points, exploratory tools don't")
-        print("💡 Tips: Complete all 6 essential tools for full investigation")
-        print("🔄 Freedom: Go back to customer info or toolbox anytime")
+        print()
+        print("📋 AVAILABLE COMMANDS:")
+        print("  1-10     - Run investigation tool")
+        print("  help     - Show this help message")
+        print("  status   - Show investigation progress")
+        print("  customer - Review customer ticket")
+        print("  toolbox  - Review investigation tools")
+        print("  evidence - Show evidence summary (NEW!)")
+        print("  solve    - Propose solution (min 3/6 tools)")
+        print("  exit     - Exit the lab")
+        print()
+        print("📊 SCORING:")
+        print("  🎯 Essential tools: Give points for evidence")
+        print("  🎭 Exploratory tools: No points, optional")
+        print()
+        print("💡 TIPS:")
+        print("  • Minimum 3 essential tools to solve (6 recommended)")
+        print("  • Use 'evidence' to review what you've found")
+        print("  • Early solving possible but may miss insights")
+        print("  • You can exit anytime with 'exit' command")
 
     def show_status(self):
         """Show current investigation status"""
