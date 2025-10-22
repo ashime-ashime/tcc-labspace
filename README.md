@@ -1,39 +1,112 @@
-# Testcontainers Cloud (TCC) Lab for TSEs
+# Testcontainers Cloud (TCC) Support Labs
 
-A hands-on lab for Technical Support Engineers to master Testcontainers Cloud through a practical break-and-fix exercise based on real customer scenarios.
+Real-world break-and-fix scenarios for Technical Support Engineers. Build your TCC troubleshooting skills through hands-on investigation of authentic customer issues.
 
 ## Quick Start
 
 ```bash
-# Run the enhanced interactive TSE investigation game
+# Run the lab environment
 docker run -it ashimeashime006/tcc-lab:latest
 
-# The mystery investigation game starts automatically!
+# Navigate to an exercise and start investigating
+cd exercises/exercise-1-ci-timeout
+cat TICKET.txt
 ```
 
-**🎮 Complete Enhanced Interactive Experience:**
-- **📋 Customer Analysis Phase** - Read ticket, explore supporting documents, take assessment quiz (2 attempts)
-- **🔧 Investigation Toolbox** - 10 diagnostic tools (6 essential + 4 red herrings) with randomized order
-- **🕵️‍♂️ Active Investigation** - Run real commands, discover clues progressively, strategic decision making
-- **🎯 Solution Evaluation** - Evidence-based solution validation with comprehensive feedback and guidance
+**No setup required!** The environment is pre-configured and ready for investigation.
 
-**No Setup Required!** TCC account, service tokens, and Testcontainers Desktop are pre-configured.
+## Lab Philosophy
 
-## Exercise
+**Self-Directed Investigation:**
+- Read actual customer tickets
+- Investigate real logs and configurations
+- Find issues yourself (no hand-holding)
+- Senior TSE-level challenges
 
-### The Quota Mystery (60-90 minutes)
-- **Scenario**: Customer hitting TCC quota limits in GitHub Actions
-- **Focus**: Billing models, usage tracking, and quota analysis
-- **Skills**: Customer investigation, strategic thinking, evidence analysis, professional communication
-- **Type**: Complete enhanced interactive TSE training simulation
-- **Experience**: Realistic workflow from customer ticket analysis to evidence-based solution proposal
-- **Features**: Real command execution, randomized tool order, multiple quiz attempts, comprehensive feedback
+**Authentic TSE Experience:**
+- Real support scenarios
+- Customer-provided data
+- Professional troubleshooting workflow
+- Evidence-based problem solving
+
+## Available Exercises
+
+### Exercise 1: CI Pipeline Timeout
+
+**Difficulty:** ⭐⭐ (Intermediate)  
+**Duration:** 20-30 minutes  
+**Focus:** GitHub Actions + TCC troubleshooting
+
+**Scenario:** Enterprise customer's CI/CD pipeline failing for 48 hours. Workflow times out during TCC setup. Local tests work perfectly. Find the root cause.
+
+**Location:** `exercises/exercise-1-ci-timeout/`
+
+---
+
+*More exercises coming soon!*
 
 ## Prerequisites
 
-- Docker Desktop (to run the lab container)
-- Basic knowledge of customer support workflows
-- Experience with systematic troubleshooting approaches
+- Docker Desktop
+- Basic command-line skills
+- TSE troubleshooting experience
+- Ability to read logs and analyze configurations
+
+## How To Use
+
+### Starting an Exercise
+
+```bash
+# 1. Navigate to the exercise
+cd exercises/exercise-1-ci-timeout
+
+# 2. Read the customer ticket
+cat TICKET.txt
+
+# 3. Investigate customer data
+ls -la customer-data/
+cat customer-data/ci-logs.txt
+cat customer-data/workflow/test.yml
+
+# 4. Check investigation guide if needed
+cat investigation-guide/where-to-start.md
+
+# 5. Verify your findings
+cat solution/root-cause.md
+```
+
+### Optional: TCC Diagnostic API
+
+```bash
+# Start the mock TCC API
+cd /workspace/tcc-diagnostic-api
+./start-api.sh
+
+# Run diagnostic queries
+curl http://localhost:8080/v1/health
+curl -H "Authorization: Bearer tcc-lab-token-12345" http://localhost:8080/v1/account
+```
+
+## Lab Structure
+
+```
+/workspace/
+├── exercises/                    # All lab exercises
+│   └── exercise-1-ci-timeout/   # First exercise
+│       ├── TICKET.txt           # Customer support ticket
+│       ├── customer-data/       # Customer-provided files
+│       ├── investigation-guide/ # Optional hints
+│       └── solution/            # Verification and answers
+│
+├── tcc-diagnostic-api/          # Optional diagnostic tool (shared)
+│   ├── mock-tcc-api.py         # Mock TCC API server
+│   ├── start-api.sh            # API startup script
+│   └── README.md               # API documentation
+│
+└── .labspace/                   # Lab infrastructure
+    ├── Dockerfile              # Lab environment
+    └── lab-welcome.sh          # Welcome banner
+```
 
 ## Development
 
@@ -49,26 +122,36 @@ docker build -f .labspace/Dockerfile -t tcc-lab .
 docker run -it tcc-lab
 ```
 
-## Structure
+## Learning Outcomes
 
-```
-labspace-exercises/
-└── quota-mystery/       # The Quota Mystery: TCC billing & quota investigation
-    ├── customer-report/ # Real customer data and broken configurations
-    ├── solutions/       # Working solutions and response templates
-    └── tse-investigation/ # Systematic investigation methodology
-```
+After completing these labs, you will:
 
-## Learning Approach
+- ✅ Master systematic TCC troubleshooting methodology
+- ✅ Understand GitHub Actions + TCC integration
+- ✅ Diagnose account and plan-related issues
+- ✅ Analyze logs and configurations effectively
+- ✅ Communicate professionally with customers
+- ✅ Handle real-world support scenarios confidently
 
-**Complete Enhanced TSE Training Simulation:**
-- **Realistic customer scenarios** with complete ticket analysis
-- **Strategic investigation methodology** with 10 diagnostic tools
-- **Real command execution** for authentic TSE skill building
-- **Evidence-based solution evaluation** with detailed feedback
-- **Professional communication guidance** with response templates
-- **Red herring tools** for critical thinking development
-- **Progressive clue discovery** with educational insights
-- **Based on actual TSE support tickets** with real diagnostic commands
+## What Makes This Different
 
-**Perfect for Senior TSE skill development with complete educational depth!**
+**No Hand-Holding:**
+- No interactive tutorials or step-by-step guides
+- Self-directed investigation like real support work
+- Find clues yourself by reading files and analyzing data
+
+**Senior TSE Level:**
+- Realistic complexity
+- Multiple potential issues to investigate
+- Requires critical thinking and analysis
+- Not obvious at first glance
+
+**Authentic Experience:**
+- Based on real customer tickets
+- Actual error messages and logs
+- Real TCC account scenarios
+- Professional customer communication required
+
+---
+
+**Perfect for building Senior TSE troubleshooting skills!** 🎯

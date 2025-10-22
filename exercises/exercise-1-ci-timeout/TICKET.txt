@@ -1,0 +1,98 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║   📞 SUPPORT TICKET #TCC-2025-001                                           ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+SUBJECT:        GitHub Actions CI pipeline timeout with Testcontainers Cloud
+PRIORITY:       🔴 HIGH - Blocking production deployments
+CUSTOMER:       Enterprise Development Team (Fortune 500)
+REPORTED:       48 hours ago
+STATUS:         CRITICAL - Escalated to L2 Support
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ISSUE DESCRIPTION:
+
+Our CI/CD pipeline has been failing for the past 48 hours. The GitHub Actions 
+workflow that sets up Testcontainers Cloud is timing out after approximately 
+2 minutes during the setup phase.
+
+The same test suite runs perfectly when executed locally on developer machines 
+using Docker Desktop. No configuration changes were made to our Testcontainers 
+setup before this issue started.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+TECHNICAL DETAILS:
+
+  • Platform: GitHub Actions (ubuntu-latest)
+  • Test Framework: Java with Maven
+  • TCC Integration: Recently adopted Testcontainers Cloud
+  • Test Suite: Integration tests with PostgreSQL containers
+  • Local Environment: Works flawlessly with Docker Desktop
+  • Pipeline Timing: Fails during TCC setup phase (before tests run)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WHAT CUSTOMER HAS TRIED:
+
+  ✓ Regenerated service account token (as suggested in documentation)
+  ✓ Verified TCC service status dashboard (all systems operational)
+  ✓ Checked network connectivity from GitHub Actions runners
+  ✓ Restarted GitHub Actions runners
+  ✓ Reviewed workflow YAML for syntax errors
+  
+  Result: No improvement - issue persists
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+BUSINESS IMPACT:
+
+  🚫 Deployment pipeline completely blocked
+  📅 Quarterly product release delayed
+  👥 30+ developers unable to validate changes in CI
+  💼 Customer commitments at risk
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 YOUR MISSION:
+
+  1. Investigate the provided customer data
+  2. Identify the root cause of the CI pipeline failure
+  3. Determine the appropriate solution
+  4. Document your findings for the customer
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📁 AVAILABLE DATA:
+
+  customer-data/           Customer-provided files
+  ├── ci-logs.txt         GitHub Actions execution logs
+  ├── account-info.json   TCC account configuration
+  ├── usage-data.txt      TCC usage statistics
+  └── workflow/
+      └── test.yml        Current GitHub Actions workflow
+
+  investigation-guide/     Optional troubleshooting assistance
+  ├── where-to-start.md   Suggested investigation approach
+  └── tcc-diagnostics.md  TCC troubleshooting techniques
+
+  solution/                Check your answer (after investigation)
+  ├── root-cause.md       Root cause analysis
+  ├── fixed-workflow.yml  Corrected configuration
+  └── customer-response.md Response template
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 TIPS:
+
+  • Start by examining the CI logs for error messages
+  • Compare local (working) vs CI (failing) environments
+  • Don't assume - gather all evidence before concluding
+  • The mock TCC API is available for diagnostic queries
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Good luck! The customer is counting on you.
+

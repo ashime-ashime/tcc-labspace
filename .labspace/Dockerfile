@@ -16,12 +16,13 @@ RUN apt-get update && apt-get install -y \
 # Create symbolic links for python
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
-# Install Python packages for TCC exercises
+# Install Python packages for TCC exercises and mock API
 RUN pip3 install --no-cache-dir \
     testcontainers \
     psycopg2-binary \
     pytest \
-    requests
+    requests \
+    Flask
 
 # Copy lab content
 COPY . /workspace/
@@ -31,8 +32,9 @@ WORKDIR /workspace
 RUN mkdir -p /workspace/.testcontainers \
     && mkdir -p /workspace/.testcontainers-desktop
 
-# Make welcome script executable
-RUN chmod +x /workspace/.labspace/welcome.sh
+# Make scripts executable
+RUN chmod +x /workspace/.labspace/lab-welcome.sh \
+    && chmod +x /workspace/tcc-diagnostic-api/start-api.sh
 
-# Start mock API server, welcome script, and mystery investigation game
-CMD ["/bin/bash", "-c", "/workspace/.labspace/start-mock-api.sh && /workspace/.labspace/welcome.sh && echo '' && echo '🎮 Starting Interactive Mystery Investigation Game...' && echo '' && cd /workspace/labspace-exercises/quota-mystery && python3 .investigation-engine.py"]
+# Start with lab welcome banner and interactive bash
+CMD ["/bin/bash", "-c", "/workspace/.labspace/lab-welcome.sh && exec /bin/bash"]
