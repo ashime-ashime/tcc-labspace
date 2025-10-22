@@ -47,22 +47,6 @@ cat usage-data.txt
   - `fixed-workflow.yml` - Corrected workflow configuration
   - `customer-response.md` - Professional response template
 
-## Optional: TCC Diagnostic API
-
-A mock TCC API is available for realistic diagnostic queries:
-
-```bash
-# Start the API
-cd /workspace/tcc-diagnostic-api
-./start-api.sh
-
-# Use diagnostic endpoints
-curl http://localhost:8080/v1/health
-curl -H "Authorization: Bearer tcc-lab-token-12345" http://localhost:8080/v1/account
-curl -H "Authorization: Bearer tcc-lab-token-12345" http://localhost:8080/v1/usage
-```
-
-See `/workspace/tcc-diagnostic-api/README.md` for details.
 
 ## Investigation Tips
 

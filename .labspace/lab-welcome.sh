@@ -40,11 +40,6 @@ Testcontainers Cloud troubleshooting skills through hands-on investigation.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-🔧 OPTIONAL TOOLS:
-
-   TCC Diagnostic API: /workspace/tcc-diagnostic-api/
-   Start with: cd tcc-diagnostic-api && ./start-api.sh
-
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 💡 HOW THESE LABS WORK:
