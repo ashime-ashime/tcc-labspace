@@ -47,3 +47,8 @@ echo "✅ Analysis saved to: tse-analysis-$(date +%Y%m%d-%H%M%S).txt"
 echo ""
 echo "🎯 Great work! Your analysis has been recorded."
 echo "   The instructor will review your findings."
+echo ""
+echo "📤 Auto-submitting your analysis..."
+
+# Run the auto-submission script
+./auto-submit.sh
