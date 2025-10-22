@@ -28,6 +28,26 @@ cat customer-report/github-actions-logs.txt
 - Failure timeline correlation
 - Network connectivity vs authentication errors
 
+#### 1.4 Run Diagnostic Commands
+**Test API connectivity (Mock API is already running):**
+```bash
+# Test service health
+curl http://localhost:8080/v1/health
+
+# Test account access with valid token
+curl -H "Authorization: Bearer tcc-lab-token-12345" \
+     http://localhost:8080/v1/account
+
+# Check usage and quota status
+curl -H "Authorization: Bearer tcc-lab-token-12345" \
+     http://localhost:8080/v1/usage
+```
+**What to look for:**
+- Service operational status (200 OK)
+- Account plan type and billing model
+- Quota usage vs limits
+- Authentication success/failure patterns
+
 ### Phase 2: Account Investigation (10 minutes)
 
 #### 2.1 Check Account Details
@@ -63,9 +83,10 @@ cat customer-report/usage-dashboard-screenshot.txt
 - Plan type restrictions
 
 **Supporting evidence:**
-- Usage metrics vs limits
+- Usage metrics vs limits (from API: 52/50 minutes used)
 - Timeline correlation with failures
 - Execution environment differences
+- API confirmation: `"quota_exceeded": true`
 
 #### 3.2 Understand Customer Confusion
 **Common misconceptions:**
@@ -106,6 +127,9 @@ cat customer-report/usage-dashboard-screenshot.txt
 - [ ] Reviewed customer issue report and symptoms
 - [ ] Examined GitHub Actions workflow configuration
 - [ ] Analyzed failure logs and timeline patterns
+- [ ] Verified mock TCC API server is running
+- [ ] Ran diagnostic curl commands
+- [ ] Verified API responses and quota status
 - [ ] Checked account type and plan details
 - [ ] Verified quota usage and limits
 - [ ] Identified local vs CI execution differences
@@ -127,4 +151,22 @@ cat customer-report/usage-dashboard-screenshot.txt
 - **Plan types**: Legacy vs current Docker plans have different TCC inclusions
 - **Customer confusion**: Billing complexity requires clear communication
 - **Investigation process**: Systematic approach from symptoms to resolution
+- **Diagnostic tools**: API testing provides concrete evidence for root cause analysis
+- **Interactive investigation**: Hands-on testing enhances understanding and confidence
 - **Communication**: Technical and business concepts need clear explanation
+
+## 🔧 Diagnostic Tools Reference
+
+**Mock TCC API Server Commands:**
+```bash
+# Test endpoints (server auto-starts with container)
+curl http://localhost:8080/v1/health
+curl -H "Authorization: Bearer tcc-lab-token-12345" http://localhost:8080/v1/account
+curl -H "Authorization: Bearer tcc-lab-token-12345" http://localhost:8080/v1/usage
+```
+
+**Expected Key Findings:**
+- Service operational (200 OK)
+- Quota exceeded: 52/50 minutes
+- Plan type: trial_legacy
+- Billing model: separate_tcc_billing
