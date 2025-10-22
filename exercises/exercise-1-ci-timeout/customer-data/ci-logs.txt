@@ -33,23 +33,6 @@ Step 4: Set up Testcontainers Cloud ❌
   ❌ Failed after 120 seconds
   ❌ Action failed with exit code 1
 
-ERROR SUMMARY:
---------------
-The Testcontainers Cloud setup action timed out while waiting for a connection.
-This suggests either:
-1. Network connectivity issues
-2. Authentication problems
-3. Service availability issues
-4. Quota/billing limitations
-
-RECOMMENDATION:
----------------
-Check the following:
-- Service account token validity
-- TCC account quota status
-- Network connectivity
-- Recent changes to the repository
-
 Previous successful runs:
 - Last successful run: 2025-01-08T14:22:00Z
 - Pattern: Consistent failures since 2025-01-09T00:00:00Z

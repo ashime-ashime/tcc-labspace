@@ -25,20 +25,7 @@ jobs:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         
-    # ❌ BROKEN: Missing TCC setup step
-    # Customer expects tests to run in TCC but hasn't configured TCC agent
-    # This is why the workflow times out - no TCC connection established
-    
     - name: Run tests
       run: mvn test
       env:
-        # ❌ BROKEN: Token is set but TCC agent not configured
         TESTCONTAINERS_CLOUD_TOKEN: ${{ secrets.TESTCONTAINERS_CLOUD_TOKEN }}
-        
-    # ❌ MISSING: TCC agent setup step
-    # Should include:
-    # - name: Set up Testcontainers Cloud
-    #   uses: atomicjar/testcontainers-cloud-setup-action@v1
-    #   with:
-    #     wait: true
-    #     token: ${{ secrets.TESTCONTAINERS_CLOUD_TOKEN }}
