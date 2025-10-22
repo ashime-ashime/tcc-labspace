@@ -10,26 +10,47 @@
 
 A customer's GitHub Actions CI pipeline has been failing for 48 hours. The workflow times out during Testcontainers Cloud setup, but local tests work perfectly. Your mission: investigate and identify the root cause.
 
-## Quick Start
+## Investigation Steps
 
+**Follow these steps to complete your TSE analysis:**
+
+### **Step 1: Read the Customer Ticket**
 ```bash
-# 1. Read the customer ticket
 cat TICKET.txt
+```
 
-# 2. Investigate customer data
+### **Step 2: Investigate Customer Data**
+```bash
 cd customer-data/
 ls -la
 
-# 3. Check the logs
+# Check the CI logs
 cat ci-logs.txt
 
-# 4. Review the workflow
+# Review the workflow configuration
 cat workflow/test.yml
 
-# 5. Examine account information
+# Examine account information
 cat account-info.json
 cat usage-data.txt
 ```
+
+### **Step 3: Analyze the Issue**
+- Review all customer data thoroughly
+- Identify patterns and inconsistencies
+- Form your hypothesis about the root cause
+
+### **Step 4: Submit Your Analysis**
+```bash
+# Run the analysis script
+./analyze-issue.sh
+```
+
+**The script will ask you:**
+1. What you think is the root cause
+2. What solution you recommend
+
+**Your analysis will be saved automatically for instructor review.**
 
 ## Available Resources
 
