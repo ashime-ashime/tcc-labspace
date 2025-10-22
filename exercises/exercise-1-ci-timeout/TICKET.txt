@@ -47,15 +47,6 @@ WHAT CUSTOMER HAS TRIED:
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-BUSINESS IMPACT:
-
-  🚫 Deployment pipeline completely blocked
-  📅 Quarterly product release delayed
-  👥 30+ developers unable to validate changes in CI
-  💼 Customer commitments at risk
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
 🎯 YOUR MISSION:
 
   1. Investigate the provided customer data
@@ -73,10 +64,6 @@ BUSINESS IMPACT:
   ├── usage-data.txt      TCC usage statistics
   └── workflow/
       └── test.yml        Current GitHub Actions workflow
-
-  investigation-guide/     Optional troubleshooting assistance
-  ├── where-to-start.md   Suggested investigation approach
-  └── tcc-diagnostics.md  TCC troubleshooting techniques
 
   solution/                Check your answer (after investigation)
   ├── root-cause.md       Root cause analysis

@@ -21,7 +21,6 @@ Testcontainers Cloud troubleshooting skills through hands-on investigation.
 📋 AVAILABLE EXERCISES:
 
    Exercise 1: CI Pipeline Timeout
-   ├─ Difficulty: ⭐⭐ (Intermediate)
    ├─ Duration: 20-30 minutes
    ├─ Focus: GitHub Actions + TCC troubleshooting
    └─ Location: exercises/exercise-1-ci-timeout/
@@ -52,9 +51,8 @@ Testcontainers Cloud troubleshooting skills through hands-on investigation.
 
    1. Read the customer ticket (TICKET.txt)
    2. Investigate provided customer data
-   3. Use investigation-guide/ if you need hints
-   4. Form your hypothesis
-   5. Check solution/ to verify your findings
+   3. Form your hypothesis based on evidence
+   4. Check solution/ to verify your findings
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 

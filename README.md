@@ -33,7 +33,6 @@ cat TICKET.txt
 
 ### Exercise 1: CI Pipeline Timeout
 
-**Difficulty:** ⭐⭐ (Intermediate)  
 **Duration:** 20-30 minutes  
 **Focus:** GitHub Actions + TCC troubleshooting
 

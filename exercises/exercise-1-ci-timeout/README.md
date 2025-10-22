@@ -2,7 +2,6 @@
 
 ## Overview
 
-**Difficulty:** ⭐⭐ (Intermediate)  
 **Duration:** 20-30 minutes  
 **Focus:** GitHub Actions + TCC troubleshooting  
 **Type:** Self-directed break-and-fix investigation
@@ -41,11 +40,6 @@ cat usage-data.txt
   - `account-info.json` - TCC account configuration
   - `usage-data.txt` - TCC usage statistics
   - `workflow/test.yml` - Current GitHub Actions workflow
-
-### Investigation Support
-- `investigation-guide/` - Optional troubleshooting guidance
-  - `where-to-start.md` - Recommended investigation approach
-  - `tcc-diagnostics.md` - TCC troubleshooting techniques
 
 ### Solution Verification
 - `solution/` - Check after your investigation
