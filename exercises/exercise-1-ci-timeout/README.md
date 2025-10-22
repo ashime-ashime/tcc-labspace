@@ -12,6 +12,8 @@ A customer's GitHub Actions CI pipeline has been failing for 48 hours. The workf
 
 ## Investigation Steps
 
+**📋 For detailed step-by-step instructions, see: `TSE-GUIDE.md`**
+
 **Follow these steps to complete your TSE analysis:**
 
 ### **Step 1: Read the Customer Ticket**
