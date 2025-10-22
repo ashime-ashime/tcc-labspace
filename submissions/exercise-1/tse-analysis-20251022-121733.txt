@@ -1,0 +1,16 @@
+TSE ANALYSIS - CI Pipeline Timeout
+Generated: Wed Oct 22 12:17:33 EDT 2025
+=====================================
+
+ROOT CAUSE:
+1
+
+PROPOSED SOLUTION:
+
+
+CUSTOMER RESPONSE:
+
+
+CONFIDENCE LEVEL: /10
+
+=====================================
