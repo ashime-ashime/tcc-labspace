@@ -47,10 +47,11 @@ cat usage-data.txt
 ```
 
 **The script will ask you:**
-1. What you think is the root cause
-2. What solution you recommend
+1. Your name (for tracking)
+2. What you think is the root cause
+3. What solution you recommend
 
-**Your analysis will be saved automatically for instructor review.**
+**Your analysis will be saved automatically with your name and timestamp for instructor review.**
 
 ## Available Resources
 
@@ -62,11 +63,9 @@ cat usage-data.txt
   - `usage-data.txt` - TCC usage statistics
   - `workflow/test.yml` - Current GitHub Actions workflow
 
-### Solution Verification
-- `solution/` - Check after your investigation
-  - `root-cause.md` - Complete root cause analysis
-  - `fixed-workflow.yml` - Corrected workflow configuration
-  - `customer-response.md` - Professional response template
+### Analysis Submission
+- `analyze-issue.sh` - Interactive script to submit your analysis
+- Your analysis will be saved automatically with timestamp and your name
 
 
 ## Investigation Tips
